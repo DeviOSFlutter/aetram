@@ -31,6 +31,8 @@ class WatchlistController extends GetxController {
 
   final RxString activeChartSymbol = ''.obs;
 
+  final RxList<String> portfolioSymbols = <String>[].obs;
+
   final RxMap<String, List<CandleEntity>> symbolCandles =
       <String, List<CandleEntity>>{}.obs;
 
@@ -43,6 +45,11 @@ class WatchlistController extends GetxController {
 
   void clearActiveChartSymbol() {
     activeChartSymbol.value = '';
+    _subscribeToWatchlist();
+  }
+
+  void setPortfolioSymbols(List<String> symbols) {
+    portfolioSymbols.assignAll(symbols);
     _subscribeToWatchlist();
   }
 
@@ -98,6 +105,11 @@ class WatchlistController extends GetxController {
     if (activeChartSymbol.value.isNotEmpty &&
         !symbols.contains(activeChartSymbol.value)) {
       symbols.add(activeChartSymbol.value);
+    }
+    for (final portfolioSym in portfolioSymbols) {
+      if (!symbols.contains(portfolioSym)) {
+        symbols.add(portfolioSym);
+      }
     }
 
     _socketService.subscribe(symbols);
