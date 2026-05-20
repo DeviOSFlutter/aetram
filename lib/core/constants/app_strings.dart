@@ -17,4 +17,10 @@ class AppStrings {
   static const String darkMode = 'Dark Mode';
 
   static const String lightMode = 'Light Mode';
+
+  static const String watchlistTitle = 'My Watchlist';
+
+  static const String addSymbols = 'Add Symbols';
+
+  static const String emptyWatchlist = 'No symbols added to watchlist';
 }

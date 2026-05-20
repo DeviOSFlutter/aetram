@@ -11,54 +11,48 @@ class SymbolSearchPage extends GetView<SymbolSearchController> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text(AppStrings.symbolSearchTitle),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(AppSizes.paddingMedium),
-          child: Column(
-            children: [
-              TextField(
-                controller: controller.searchController,
-                onChanged: controller.filterSymbols,
-                decoration: const InputDecoration(
-                  hintText: AppStrings.searchHint,
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                ),
+    return Scaffold(
+      appBar: AppBar(title: const Text(AppStrings.symbolSearchTitle)),
+      body: Padding(
+        padding: const EdgeInsets.all(AppSizes.paddingMedium),
+        child: Column(
+          children: [
+            TextField(
+              controller: controller.searchController,
+              onChanged: controller.filterSymbols,
+              decoration: const InputDecoration(
+                hintText: AppStrings.searchHint,
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
               ),
-              AppSizes.verticalSpaceMedium,
-              Expanded(
-                child: Obx(() {
-                  if (controller.isLoading.value) {
-                    return const AppLoader();
-                  }
+            ),
+            AppSizes.verticalSpaceMedium,
+            Expanded(
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const AppLoader();
+                }
 
-                  if (controller.errorMessage.value.isNotEmpty) {
-                    return Center(child: Text(controller.errorMessage.value));
-                  }
+                if (controller.errorMessage.value.isNotEmpty) {
+                  return Center(child: Text(controller.errorMessage.value));
+                }
 
-                  if (controller.filteredSymbols.isEmpty) {
-                    return const Center(child: Text(AppStrings.noSymbolsFound));
-                  }
+                if (controller.filteredSymbols.isEmpty) {
+                  return const Center(child: Text(AppStrings.noSymbolsFound));
+                }
 
-                  return ListView.separated(
-                    itemCount: controller.filteredSymbols.length,
-                    separatorBuilder: (_, _) => AppSizes.verticalSpaceSmall,
-                    itemBuilder: (context, index) {
-                      return SymbolTile(
-                        symbol: controller.filteredSymbols[index],
-                      );
-                    },
-                  );
-                }),
-              ),
-            ],
-          ),
+                return ListView.separated(
+                  itemCount: controller.filteredSymbols.length,
+                  separatorBuilder: (_, _) => AppSizes.verticalSpaceSmall,
+                  itemBuilder: (context, index) {
+                    return SymbolTile(
+                      symbol: controller.filteredSymbols[index],
+                    );
+                  },
+                );
+              }),
+            ),
+          ],
         ),
       ),
     );

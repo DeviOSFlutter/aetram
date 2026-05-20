@@ -2,6 +2,7 @@ import 'package:aetram/core/routes/app_routes.dart';
 import 'package:aetram/features/splash/presentation/pages/splash_page.dart';
 import 'package:aetram/features/symbol_search/presentation/bindings/symbol_search_binding.dart';
 import 'package:aetram/features/symbol_search/presentation/pages/symbol_search_page.dart';
+import 'package:aetram/features/watchlist/presentation/pages/watchlist_page.dart';
 import 'package:get/get.dart';
 
 class AppPages {
@@ -14,5 +15,6 @@ class AppPages {
       page: () => const SymbolSearchPage(),
       binding: SymbolSearchBinding(),
     ),
+    GetPage(name: AppRoutes.watchlist, page: () => const WatchlistPage()),
   ];
 }
