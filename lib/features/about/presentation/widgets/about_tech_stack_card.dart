@@ -30,7 +30,7 @@ class AboutTechStackCard extends StatelessWidget {
 
     return AboutCardFrame(
       icon: Icons.code_rounded,
-      iconColor: Colors.blue,
+      iconColor: Theme.of(context).primaryColor,
       title: AppStrings.technologyStack,
       child: Wrap(
         spacing: 10,

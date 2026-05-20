@@ -21,13 +21,13 @@ class DashboardStatsGrid extends StatelessWidget {
       {
         'label': AppStrings.invested,
         'value': FormatUtils.formatCurrency(invested),
-        'color': Colors.blue,
+        'color': Theme.of(context).primaryColor,
         'icon': Icons.savings_outlined,
       },
       {
         'label': AppStrings.currentVal,
         'value': FormatUtils.formatCurrency(current),
-        'color': Colors.teal,
+        'color': Theme.of(context).colorScheme.secondary,
         'icon': Icons.trending_up_rounded,
       },
       {

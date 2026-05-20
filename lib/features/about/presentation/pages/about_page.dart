@@ -19,25 +19,25 @@ class AboutPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('About'),
       ),
-      body: const SingleChildScrollView(
-        padding: EdgeInsets.all(AppSizes.paddingMedium),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(AppSizes.paddingMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AboutHeroCard(),
+            const AboutHeroCard(),
             AppSizes.verticalSpaceMedium,
-            AboutAssignmentCard(assignmentId: _assignmentId),
+            const AboutAssignmentCard(assignmentId: _assignmentId),
             AppSizes.verticalSpaceMedium,
             AboutSectionCard(
               icon: Icons.info_outline_rounded,
-              iconColor: Colors.blue,
+              iconColor: Theme.of(context).primaryColor,
               title: 'Project Overview',
               content:
                   'TealVue Market Watch is a real-time NSE market tracking and portfolio monitoring application built as part of the TealVue internship assignment.\n\n'
                   'The app streams live market data through Socket.IO, displays interactive candlestick charts, and lets users maintain a local portfolio with real-time P&L calculations.',
             ),
             AppSizes.verticalSpaceMedium,
-            AboutSectionCard(
+            const AboutSectionCard(
               icon: Icons.architecture_rounded,
               iconColor: Colors.deepPurple,
               title: 'Architecture',
@@ -51,11 +51,11 @@ class AboutPage extends StatelessWidget {
                   '• Repository contracts with implementation separation',
             ),
             AppSizes.verticalSpaceMedium,
-            AboutTechStackCard(),
+            const AboutTechStackCard(),
             AppSizes.verticalSpaceMedium,
-            AboutFeaturesCard(),
+            const AboutFeaturesCard(),
             AppSizes.verticalSpaceMedium,
-            AboutSectionCard(
+            const AboutSectionCard(
               icon: Icons.wifi_rounded,
               iconColor: Colors.teal,
               title: 'WebSocket & Realtime Engine',
@@ -68,7 +68,7 @@ class AboutPage extends StatelessWidget {
                   '• IndexedStack preserves WebSocket state across tab navigation',
             ),
             AppSizes.verticalSpaceMedium,
-            AboutSectionCard(
+            const AboutSectionCard(
               icon: Icons.candlestick_chart_rounded,
               iconColor: Colors.orange,
               title: 'Chart System',
@@ -82,7 +82,7 @@ class AboutPage extends StatelessWidget {
                   '• Persistent candle cache across navigation',
             ),
             AppSizes.verticalSpaceMedium,
-            AboutSectionCard(
+            const AboutSectionCard(
               icon: Icons.devices_rounded,
               iconColor: Colors.indigo,
               title: 'Responsive Design',
@@ -93,8 +93,8 @@ class AboutPage extends StatelessWidget {
                   '• IndexedStack preserves each tab\'s state independently',
             ),
             AppSizes.verticalSpaceMedium,
-            AboutFooter(assignmentId: _assignmentId),
-            SizedBox(height: 32),
+            const AboutFooter(assignmentId: _assignmentId),
+            const SizedBox(height: 32),
           ],
         ),
       ),

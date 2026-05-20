@@ -72,7 +72,7 @@ class DashboardHoldingsList extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: ltp > 0 ? Colors.blue : null,
+                              color: ltp > 0 ? Theme.of(context).primaryColor : null,
                             ),
                           ),
                           const SizedBox(height: 2),
@@ -121,10 +121,10 @@ class DashboardHoldingsList extends StatelessWidget {
                             children: [
                               Text(
                                 FormatUtils.formatCurrency(liveLtp),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.blue),
+                                    color: Theme.of(context).primaryColor),
                               ),
                               Text('  vs  ',
                                   style: TextStyle(

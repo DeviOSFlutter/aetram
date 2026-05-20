@@ -34,15 +34,13 @@ class PortfolioPage extends GetView<PortfolioController> {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: isDark
-                          ? Colors.blue.withValues(alpha: 0.1)
-                          : Colors.blue.withValues(alpha: 0.05),
+                      color: Theme.of(context).primaryColor.withValues(alpha: isDark ? 0.1 : 0.05),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.account_balance_wallet,
                       size: 60,
-                      color: Colors.blue,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                   AppSizes.verticalSpaceLarge,
@@ -320,7 +318,7 @@ class PortfolioPage extends GetView<PortfolioController> {
                                       FormatUtils.formatCurrency(currentLtp),
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: ltp > 0 ? Colors.blue : null,
+                                        color: ltp > 0 ? Theme.of(context).primaryColor : null,
                                       ),
                                     ),
                                   ],
