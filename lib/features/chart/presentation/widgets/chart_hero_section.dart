@@ -1,4 +1,5 @@
 import 'package:aetram/core/utils/app_sizes.dart';
+import 'package:aetram/core/utils/format_utils.dart';
 import 'package:aetram/features/chart/domain/enums/chart_range.dart';
 import 'package:aetram/features/chart/presentation/controllers/chart_controller.dart';
 import 'package:aetram/features/portfolio/presentation/controllers/portfolio_controller.dart';
@@ -25,7 +26,8 @@ class ChartHeroSection extends StatelessWidget {
 
   void _showBuySheet(BuildContext context, double currentLtp) {
     final qtyController = TextEditingController();
-    final priceController = TextEditingController(text: currentLtp > 0 ? currentLtp.toStringAsFixed(2) : '');
+    final priceController = TextEditingController(
+        text: currentLtp > 0 ? currentLtp.toStringAsFixed(2) : '');
     final formKey = GlobalKey<FormState>();
 
     Get.bottomSheet(
@@ -70,7 +72,8 @@ class ChartHeroSection extends StatelessWidget {
                 AppSizes.verticalSpaceMedium,
                 TextFormField(
                   controller: qtyController,
-                  keyboardType: const TextInputType.numberWithOptions(decimal: false),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: false),
                   decoration: const InputDecoration(
                     labelText: 'Quantity',
                     border: OutlineInputBorder(),
@@ -90,7 +93,8 @@ class ChartHeroSection extends StatelessWidget {
                 AppSizes.verticalSpaceMedium,
                 TextFormField(
                   controller: priceController,
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                   decoration: const InputDecoration(
                     labelText: 'Average Buy Price (₹)',
                     border: OutlineInputBorder(),
@@ -117,7 +121,8 @@ class ChartHeroSection extends StatelessWidget {
                         final double qty = double.parse(qtyController.text);
                         final double price = double.parse(priceController.text);
 
-                        final portfolioController = Get.find<PortfolioController>();
+                        final portfolioController =
+                            Get.find<PortfolioController>();
                         await portfolioController.buyHolding(
                           symbol: symbol,
                           quantity: qty,
@@ -128,7 +133,7 @@ class ChartHeroSection extends StatelessWidget {
 
                         Get.snackbar(
                           'Order Placed',
-                          'Successfully bought $qty shares of $symbol at ₹${price.toStringAsFixed(2)}',
+                          'Successfully bought $qty shares of $symbol at ${FormatUtils.formatCurrency(price)}',
                           snackPosition: SnackPosition.BOTTOM,
                           backgroundColor: Colors.green,
                           colorText: Colors.white,
@@ -184,12 +189,18 @@ class ChartHeroSection extends StatelessWidget {
         children: [
           Text(
             symbol,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium
+                ?.copyWith(fontWeight: FontWeight.bold),
           ),
           AppSizes.verticalSpaceMedium,
           Text(
-            ltp != null ? '₹${ltp!.toStringAsFixed(2)}' : '₹--',
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(fontWeight: FontWeight.bold),
+            ltp != null ? FormatUtils.formatCurrency(ltp!) : '₹--',
+            style: Theme.of(context)
+                .textTheme
+                .displayMedium
+                ?.copyWith(fontWeight: FontWeight.bold),
           ),
           AppSizes.verticalSpaceSmall,
           Obx(
@@ -197,8 +208,8 @@ class ChartHeroSection extends StatelessWidget {
               controller.selectedRange.value == ChartRange.oneDay
                   ? 'Live Market Session'
                   : controller.selectedRange.value == ChartRange.oneWeek
-                  ? '1 Week Historical'
-                  : '1 Month Historical',
+                      ? '1 Week Historical'
+                      : '1 Month Historical',
               style: TextStyle(
                 color: Colors.grey.shade400,
                 fontSize: 14,
@@ -209,9 +220,9 @@ class ChartHeroSection extends StatelessWidget {
           AppSizes.verticalSpaceSmall,
           if (change != null && changePercentage != null)
             Text(
-              '${change!.toStringAsFixed(2)} (${changePercentage!.toStringAsFixed(2)}%)',
+              '${FormatUtils.formatCurrency(change!, includeSign: true)} (${FormatUtils.formatPercentage(changePercentage!, includeSign: true)})',
               style: TextStyle(
-                color: isPositive ? Colors.green : Colors.red,
+                color: FormatUtils.getPnLRawColor(change!),
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
@@ -236,10 +247,11 @@ class ChartHeroSection extends StatelessWidget {
               icon: const Icon(Icons.shopping_cart, size: 18),
               label: const Text(
                 'BUY NOW',
-                style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.1),
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.1),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: isPositive ? const Color(0xFF00E676) : const Color(0xFFFF5252),
+                backgroundColor: FormatUtils.getPnLColor(change ?? 0),
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),

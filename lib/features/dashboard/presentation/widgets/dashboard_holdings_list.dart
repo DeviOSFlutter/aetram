@@ -1,4 +1,5 @@
 import 'package:aetram/core/utils/app_sizes.dart';
+import 'package:aetram/core/utils/format_utils.dart';
 import 'package:aetram/features/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,21 +20,13 @@ class DashboardHoldingsList extends StatelessWidget {
       separatorBuilder: (context, index) => AppSizes.verticalSpaceSmall,
       itemBuilder: (context, index) {
         final holding = controller.holdings[index];
-        final ltp =
-            controller.portfolioController.getLtp(holding.symbol);
-        final atp =
-            controller.portfolioController.getAtp(holding.symbol);
-        final double liveLtp =
-            ltp > 0 ? ltp : holding.averageBuyPrice;
+        final ltp = controller.portfolioController.getLtp(holding.symbol);
+        final atp = controller.portfolioController.getAtp(holding.symbol);
+        final double liveLtp = ltp > 0 ? ltp : holding.averageBuyPrice;
         final double holdingPnl =
             controller.portfolioController.getHoldingPnL(holding);
         final double holdingPnlPct =
-            controller.portfolioController
-                .getHoldingPnLPercentage(holding);
-        final bool isPositive = holdingPnl >= 0;
-        final Color pnlColor =
-            isPositive ? const Color(0xFF00E676) : const Color(0xFFFF5252);
-        final String sign = isPositive ? '+' : '';
+            controller.portfolioController.getHoldingPnLPercentage(holding);
 
         return Container(
           decoration: BoxDecoration(
@@ -65,10 +58,9 @@ class DashboardHoldingsList extends StatelessWidget {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            '${holding.quantity.toStringAsFixed(0)} qty  ·  avg ₹${holding.averageBuyPrice.toStringAsFixed(2)}',
+                            '${holding.quantity.toStringAsFixed(0)} qty  ·  avg ${FormatUtils.formatCurrency(holding.averageBuyPrice)}',
                             style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey.shade500),
+                                fontSize: 12, color: Colors.grey.shade500),
                           ),
                         ],
                       ),
@@ -76,7 +68,7 @@ class DashboardHoldingsList extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            '₹${liveLtp.toStringAsFixed(2)}',
+                            FormatUtils.formatCurrency(liveLtp),
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -88,15 +80,17 @@ class DashboardHoldingsList extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: pnlColor.withValues(alpha: 0.12),
+                              color: FormatUtils.getPnLColor(holdingPnl)
+                                  .withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
-                              '$sign${holdingPnlPct.toStringAsFixed(2)}%',
+                              FormatUtils.formatPercentage(holdingPnlPct,
+                                  includeSign: true),
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold,
-                                color: pnlColor,
+                                color: FormatUtils.getPnLColor(holdingPnl),
                               ),
                             ),
                           ),
@@ -116,19 +110,17 @@ class DashboardHoldingsList extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             'LTP vs VWAP',
                             style: TextStyle(
-                                fontSize: 11,
-                                color: Colors.grey.shade500),
+                                fontSize: 11, color: Colors.teal),
                           ),
                           Row(
                             children: [
                               Text(
-                                '₹${liveLtp.toStringAsFixed(2)}',
+                                FormatUtils.formatCurrency(liveLtp),
                                 style: const TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,
@@ -139,13 +131,11 @@ class DashboardHoldingsList extends StatelessWidget {
                                       fontSize: 11,
                                       color: Colors.grey.shade500)),
                               Text(
-                                '₹${atp.toStringAsFixed(2)}',
+                                FormatUtils.formatCurrency(atp),
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
-                                  color: liveLtp >= atp
-                                      ? const Color(0xFF00E676)
-                                      : const Color(0xFFFF5252),
+                                  color: FormatUtils.getPnLColor(liveLtp - atp),
                                 ),
                               ),
                             ],

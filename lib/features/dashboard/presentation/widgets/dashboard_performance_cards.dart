@@ -1,4 +1,5 @@
 import 'package:aetram/core/utils/app_sizes.dart';
+import 'package:aetram/core/utils/format_utils.dart';
 import 'package:aetram/features/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:aetram/features/portfolio/domain/entities/portfolio_holding_entity.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class DashboardPerformanceCards extends StatelessWidget {
             isDark: isDark,
             label: 'BEST PERFORMER',
             holding: controller.bestPerformingHolding,
-            accent: const Color(0xFF00E676),
+            accent: FormatUtils.positiveColor,
           ),
         ),
         const SizedBox(width: 12),
@@ -28,7 +29,7 @@ class DashboardPerformanceCards extends StatelessWidget {
             isDark: isDark,
             label: 'WORST PERFORMER',
             holding: controller.worstPerformingHolding,
-            accent: const Color(0xFFFF5252),
+            accent: FormatUtils.negativeColor,
           ),
         ),
       ],
@@ -43,11 +44,8 @@ class DashboardPerformanceCards extends StatelessWidget {
   }) {
     double? pct;
     if (holding != null) {
-      pct = controller.portfolioController
-          .getHoldingPnLPercentage(holding);
+      pct = controller.portfolioController.getHoldingPnLPercentage(holding);
     }
-    final bool isPos = (pct ?? 0) >= 0;
-    final String sign = isPos ? '+' : '';
 
     return Container(
       decoration: BoxDecoration(
@@ -98,7 +96,7 @@ class DashboardPerformanceCards extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  '$sign${pct?.toStringAsFixed(2) ?? '0.00'}%',
+                  FormatUtils.formatPercentage(pct ?? 0.0, includeSign: true),
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,

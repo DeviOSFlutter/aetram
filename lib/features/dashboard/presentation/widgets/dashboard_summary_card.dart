@@ -1,4 +1,6 @@
+import 'package:aetram/core/constants/app_strings.dart';
 import 'package:aetram/core/utils/app_sizes.dart';
+import 'package:aetram/core/utils/format_utils.dart';
 import 'package:aetram/features/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -14,10 +16,6 @@ class DashboardSummaryCard extends StatelessWidget {
     final double current = controller.totalCurrent;
     final double pnl = controller.totalPnL;
     final double pnlPct = controller.totalPnLPercentage;
-    final bool isPositive = pnl >= 0;
-    final Color pnlColor =
-        isPositive ? const Color(0xFF00E676) : const Color(0xFFFF5252);
-    final String sign = isPositive ? '+' : '';
 
     return Container(
       decoration: BoxDecoration(
@@ -46,7 +44,7 @@ class DashboardSummaryCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'TOTAL PORTFOLIO VALUE',
+                  AppStrings.totalPortfolioValue,
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
@@ -73,7 +71,7 @@ class DashboardSummaryCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              '₹${current.toStringAsFixed(2)}',
+              FormatUtils.formatCurrency(current),
               style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w900,
@@ -83,11 +81,12 @@ class DashboardSummaryCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _summarySubCol('Invested', '₹${invested.toStringAsFixed(2)}'),
+                _summarySubCol(
+                    AppStrings.invested, FormatUtils.formatCurrency(invested)),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('Returns',
+                    Text(AppStrings.returns,
                         style: TextStyle(
                             fontSize: 12,
                             color: Colors.white.withValues(alpha: 0.6))),
@@ -95,34 +94,36 @@ class DashboardSummaryCard extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          isPositive
+                          pnl >= 0
                               ? Icons.arrow_upward_rounded
                               : Icons.arrow_downward_rounded,
                           size: 16,
-                          color: pnlColor,
+                          color: FormatUtils.getPnLColor(pnl),
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          '$sign₹${pnl.toStringAsFixed(2)}',
+                          FormatUtils.formatCurrency(pnl, includeSign: true),
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: pnlColor),
+                              color: FormatUtils.getPnLColor(pnl)),
                         ),
                         const SizedBox(width: 6),
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: pnlColor.withValues(alpha: 0.15),
+                            color: FormatUtils.getPnLColor(pnl)
+                                .withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            '$sign${pnlPct.toStringAsFixed(2)}%',
+                            FormatUtils.formatPercentage(pnlPct,
+                                includeSign: true),
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
-                                color: pnlColor),
+                                color: FormatUtils.getPnLColor(pnl)),
                           ),
                         ),
                       ],

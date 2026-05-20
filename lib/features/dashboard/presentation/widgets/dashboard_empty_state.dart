@@ -1,3 +1,4 @@
+import 'package:aetram/core/constants/app_strings.dart';
 import 'package:aetram/core/utils/app_sizes.dart';
 import 'package:aetram/features/main/presentation/controllers/main_controller.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class DashboardEmptyState extends StatelessWidget {
               ),
               AppSizes.verticalSpaceLarge,
               Text(
-                'No Portfolio Data Yet',
+                AppStrings.emptyPortfolioTitle,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -46,7 +47,7 @@ class DashboardEmptyState extends StatelessWidget {
               ),
               AppSizes.verticalSpaceSmall,
               Text(
-                'Your dashboard analytics will appear here once you purchase holdings from the Watchlist.',
+                AppStrings.emptyPortfolioSubtitle,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Colors.grey.shade500,
                     ),
@@ -61,7 +62,7 @@ class DashboardEmptyState extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () => Get.find<MainController>().changeTab(1),
                   icon: const Icon(Icons.search_rounded),
-                  label: const Text('Explore Watchlist'),
+                  label: const Text(AppStrings.exploreWatchlist),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal,
                     foregroundColor: Colors.white,
@@ -79,7 +80,12 @@ class DashboardEmptyState extends StatelessWidget {
   }
 
   Widget _buildPlaceholderCards(bool isDark) {
-    final labels = ['Total Invested', 'Current Value', 'Total P&L', 'P&L %'];
+    final labels = [
+      AppStrings.investedValue,
+      AppStrings.currentVal,
+      AppStrings.totalPnL,
+      AppStrings.pnlPercent
+    ];
     return GridView.count(
       crossAxisCount: 2,
       shrinkWrap: true,

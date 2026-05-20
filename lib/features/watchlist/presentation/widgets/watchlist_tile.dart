@@ -1,5 +1,7 @@
+import 'package:aetram/core/constants/app_strings.dart';
 import 'package:aetram/core/routes/app_routes.dart';
 import 'package:aetram/core/utils/app_sizes.dart';
+import 'package:aetram/core/utils/format_utils.dart';
 import 'package:aetram/features/watchlist/domain/entities/tick_entity.dart';
 import 'package:aetram/features/watchlist/domain/entities/watchlist_item_entity.dart';
 import 'package:aetram/features/watchlist/presentation/controllers/watchlist_controller.dart';
@@ -15,8 +17,6 @@ class WatchlistTile extends GetView<WatchlistController> {
   Widget build(BuildContext context) {
     return Obx(() {
       final TickEntity? tick = controller.getTick(item.symbol);
-
-      final bool isPositive = (tick?.change ?? 0) >= 0;
 
       return Card(
         child: ListTile(
@@ -34,21 +34,21 @@ class WatchlistTile extends GetView<WatchlistController> {
           subtitle: tick == null
               ? const Padding(
                   padding: EdgeInsets.only(top: 4),
-                  child: Text('Waiting for realtime data...'),
+                  child: Text(AppStrings.waitingForRealtime),
                 )
               : Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Row(
                     children: [
                       Text(
-                        '₹${tick.ltp.toStringAsFixed(2)}',
+                        FormatUtils.formatCurrency(tick.ltp),
                         style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        '${tick.change.toStringAsFixed(2)} (${tick.changePercentage.toStringAsFixed(2)}%)',
+                        '${FormatUtils.formatCurrency(tick.change, includeSign: true)} (${FormatUtils.formatPercentage(tick.changePercentage, includeSign: true)})',
                         style: TextStyle(
-                          color: isPositive ? Colors.green : Colors.red,
+                          color: FormatUtils.getPnLRawColor(tick.change),
                           fontWeight: FontWeight.bold,
                         ),
                       ),

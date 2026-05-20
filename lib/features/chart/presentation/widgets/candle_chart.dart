@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:aetram/core/utils/format_utils.dart';
 import 'package:aetram/features/chart/domain/entities/candle_entity.dart';
 import 'package:aetram/features/chart/domain/enums/chart_range.dart';
 import 'package:aetram/features/chart/presentation/controllers/chart_controller.dart';
@@ -207,7 +208,7 @@ class CandleChart extends StatelessWidget {
                       getTooltipItems: (spots) {
                         return spots.map((spot) {
                           return LineTooltipItem(
-                            '₹${spot.y.toStringAsFixed(2)}',
+                            FormatUtils.formatCurrency(spot.y),
                             TextStyle(
                               color: chartColor,
                               fontWeight: FontWeight.bold,

@@ -1,3 +1,4 @@
+import 'package:aetram/core/constants/app_strings.dart';
 import 'package:aetram/features/about/presentation/widgets/about_card_frame.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +31,7 @@ class AboutTechStackCard extends StatelessWidget {
     return AboutCardFrame(
       icon: Icons.code_rounded,
       iconColor: Colors.blue,
-      title: 'Technology Stack',
+      title: AppStrings.technologyStack,
       child: Wrap(
         spacing: 10,
         runSpacing: 10,

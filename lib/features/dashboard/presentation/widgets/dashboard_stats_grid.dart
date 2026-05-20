@@ -1,4 +1,6 @@
+import 'package:aetram/core/constants/app_strings.dart';
 import 'package:aetram/core/utils/app_sizes.dart';
+import 'package:aetram/core/utils/format_utils.dart';
 import 'package:aetram/features/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -14,36 +16,32 @@ class DashboardStatsGrid extends StatelessWidget {
     final double current = controller.totalCurrent;
     final double pnl = controller.totalPnL;
     final double pnlPct = controller.totalPnLPercentage;
-    final bool isPositive = pnl >= 0;
-    final Color pnlColor =
-        isPositive ? const Color(0xFF00E676) : const Color(0xFFFF5252);
-    final String sign = isPositive ? '+' : '';
 
     final stats = [
       {
-        'label': 'Invested',
-        'value': '₹${invested.toStringAsFixed(2)}',
+        'label': AppStrings.invested,
+        'value': FormatUtils.formatCurrency(invested),
         'color': Colors.blue,
         'icon': Icons.savings_outlined,
       },
       {
-        'label': 'Current Value',
-        'value': '₹${current.toStringAsFixed(2)}',
+        'label': AppStrings.currentVal,
+        'value': FormatUtils.formatCurrency(current),
         'color': Colors.teal,
         'icon': Icons.trending_up_rounded,
       },
       {
-        'label': 'P&L',
-        'value': '$sign₹${pnl.toStringAsFixed(2)}',
-        'color': pnlColor,
-        'icon': isPositive
+        'label': AppStrings.pnl,
+        'value': FormatUtils.formatCurrency(pnl, includeSign: true),
+        'color': FormatUtils.getPnLColor(pnl),
+        'icon': pnl >= 0
             ? Icons.arrow_circle_up_outlined
             : Icons.arrow_circle_down_outlined,
       },
       {
-        'label': 'P&L %',
-        'value': '$sign${pnlPct.toStringAsFixed(2)}%',
-        'color': pnlColor,
+        'label': AppStrings.pnlPercent,
+        'value': FormatUtils.formatPercentage(pnlPct, includeSign: true),
+        'color': FormatUtils.getPnLColor(pnl),
         'icon': Icons.percent_rounded,
       },
     ];
@@ -52,9 +50,8 @@ class DashboardStatsGrid extends StatelessWidget {
     // On web/desktop/tablet (width > 600), show 4 items in a row. Otherwise show 2.
     final int crossAxisCount = width > 600 ? 4 : 2;
     // Adjust aspect ratio to keep cards looking perfectly sized.
-    final double childAspectRatio = width > 900
-        ? 2.3
-        : (width > 600 ? 1.9 : 1.65);
+    final double childAspectRatio =
+        width > 900 ? 2.3 : (width > 600 ? 1.9 : 1.65);
 
     return GridView.count(
       crossAxisCount: crossAxisCount,
@@ -89,8 +86,8 @@ class DashboardStatsGrid extends StatelessWidget {
                     color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(stat['icon'] as IconData,
-                      size: 16, color: color),
+                  child:
+                      Icon(stat['icon'] as IconData, size: 16, color: color),
                 ),
                 const Spacer(),
                 Text(

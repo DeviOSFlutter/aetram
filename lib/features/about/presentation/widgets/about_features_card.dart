@@ -1,3 +1,4 @@
+import 'package:aetram/core/constants/app_strings.dart';
 import 'package:aetram/features/about/presentation/widgets/about_card_frame.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +51,7 @@ class AboutFeaturesCard extends StatelessWidget {
     return AboutCardFrame(
       icon: Icons.star_rounded,
       iconColor: Colors.amber,
-      title: 'Features',
+      title: AppStrings.features,
       child: Column(
         children: features.asMap().entries.map((entry) {
           final f = entry.value;

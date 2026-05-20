@@ -1,4 +1,6 @@
-﻿import 'package:aetram/core/utils/app_sizes.dart';
+import 'package:aetram/core/constants/app_strings.dart';
+import 'package:aetram/core/utils/app_sizes.dart';
+import 'package:aetram/core/utils/format_utils.dart';
 import 'package:aetram/features/main/presentation/controllers/main_controller.dart';
 import 'package:aetram/features/portfolio/presentation/controllers/portfolio_controller.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,9 @@ class PortfolioPage extends GetView<PortfolioController> {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: isDark ? Colors.blue.withValues(alpha: 0.1) : Colors.blue.withValues(alpha: 0.05),
+                      color: isDark
+                          ? Colors.blue.withValues(alpha: 0.1)
+                          : Colors.blue.withValues(alpha: 0.05),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -42,7 +46,7 @@ class PortfolioPage extends GetView<PortfolioController> {
                   ),
                   AppSizes.verticalSpaceLarge,
                   Text(
-                    'Your Portfolio is Empty',
+                    AppStrings.emptyPortfolioPageTitle,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -50,7 +54,7 @@ class PortfolioPage extends GetView<PortfolioController> {
                   ),
                   AppSizes.verticalSpaceSmall,
                   Text(
-                    'Explore NSE stock symbols, analyze real-time live charts, and buy assets to build your local holdings portfolio.',
+                    AppStrings.emptyPortfolioPageSubtitle,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.grey.shade500,
                         ),
@@ -69,7 +73,7 @@ class PortfolioPage extends GetView<PortfolioController> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text('Go to Watchlist'),
+                      child: const Text(AppStrings.goToWatchlist),
                     ),
                   ),
                 ],
@@ -82,9 +86,6 @@ class PortfolioPage extends GetView<PortfolioController> {
         final double current = controller.totalCurrentValue;
         final double pnl = controller.totalPnL;
         final double pnlPct = controller.totalPnLPercentage;
-
-        final Color pnlColor = pnl >= 0 ? const Color(0xFF00E676) : const Color(0xFFFF5252);
-        final String pnlSign = pnl >= 0 ? '+' : '';
 
         return Column(
           children: [
@@ -119,7 +120,7 @@ class PortfolioPage extends GetView<PortfolioController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'PORTFOLIO VALUE',
+                      AppStrings.portfolioValue,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -129,7 +130,7 @@ class PortfolioPage extends GetView<PortfolioController> {
                     ),
                     AppSizes.verticalSpaceSmall,
                     Text(
-                      '₹${current.toStringAsFixed(2)}',
+                      FormatUtils.formatCurrency(current),
                       style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w900,
@@ -143,7 +144,7 @@ class PortfolioPage extends GetView<PortfolioController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Invested Value',
+                              AppStrings.investedValue,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey.shade500,
@@ -151,7 +152,7 @@ class PortfolioPage extends GetView<PortfolioController> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              '₹${invested.toStringAsFixed(2)}',
+                              FormatUtils.formatCurrency(invested),
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -163,7 +164,7 @@ class PortfolioPage extends GetView<PortfolioController> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              'Total Returns (PnL)',
+                              AppStrings.totalReturns,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey.shade500,
@@ -175,15 +176,15 @@ class PortfolioPage extends GetView<PortfolioController> {
                                 Icon(
                                   pnl >= 0 ? Icons.arrow_upward : Icons.arrow_downward,
                                   size: 14,
-                                  color: pnlColor,
+                                  color: FormatUtils.getPnLColor(pnl),
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  '$pnlSign₹${pnl.toStringAsFixed(2)} ($pnlSign${pnlPct.toStringAsFixed(2)}%)',
+                                  '${FormatUtils.formatCurrency(pnl, includeSign: true)} (${FormatUtils.formatPercentage(pnlPct, includeSign: true)})',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: pnlColor,
+                                    color: FormatUtils.getPnLColor(pnl),
                                   ),
                                 ),
                               ],
@@ -202,7 +203,7 @@ class PortfolioPage extends GetView<PortfolioController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'HOLDINGS (${controller.holdings.length})',
+                    '${AppStrings.holdingsHeader} (${controller.holdings.length})',
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
@@ -227,15 +228,14 @@ class PortfolioPage extends GetView<PortfolioController> {
                   final double holdingPnl = controller.getHoldingPnL(holding);
                   final double holdingPnlPct = controller.getHoldingPnLPercentage(holding);
 
-                  final Color cardPnlColor = holdingPnl >= 0 ? const Color(0xFF00E676) : const Color(0xFFFF5252);
-                  final String cardPnlSign = holdingPnl >= 0 ? '+' : '';
-
                   return Card(
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                       side: BorderSide(
-                        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05),
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.05)
+                            : Colors.black.withValues(alpha: 0.05),
                       ),
                     ),
                     child: InkWell(
@@ -261,15 +261,15 @@ class PortfolioPage extends GetView<PortfolioController> {
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: cardPnlColor.withValues(alpha: 0.1),
+                                    color: FormatUtils.getPnLColor(holdingPnl).withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
-                                    '$cardPnlSign${holdingPnlPct.toStringAsFixed(2)}%',
+                                    FormatUtils.formatPercentage(holdingPnlPct, includeSign: true),
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
-                                      color: cardPnlColor,
+                                      color: FormatUtils.getPnLColor(holdingPnl),
                                     ),
                                   ),
                                 ),
@@ -283,7 +283,7 @@ class PortfolioPage extends GetView<PortfolioController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Quantity',
+                                      AppStrings.quantity,
                                       style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
                                     ),
                                     const SizedBox(height: 2),
@@ -297,12 +297,12 @@ class PortfolioPage extends GetView<PortfolioController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Avg. Price',
+                                      AppStrings.avgPrice,
                                       style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      '₹${holding.averageBuyPrice.toStringAsFixed(2)}',
+                                      FormatUtils.formatCurrency(holding.averageBuyPrice),
                                       style: const TextStyle(fontWeight: FontWeight.bold),
                                     ),
                                   ],
@@ -316,7 +316,7 @@ class PortfolioPage extends GetView<PortfolioController> {
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      '₹${currentLtp.toStringAsFixed(2)}',
+                                      FormatUtils.formatCurrency(currentLtp),
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: ltp > 0 ? Colors.blue : null,
@@ -334,12 +334,12 @@ class PortfolioPage extends GetView<PortfolioController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Invested Value',
+                                      AppStrings.investedValue,
                                       style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      '₹${holdingInvested.toStringAsFixed(2)}',
+                                      FormatUtils.formatCurrency(holdingInvested),
                                       style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                     ),
                                   ],
@@ -348,16 +348,16 @@ class PortfolioPage extends GetView<PortfolioController> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      'Returns (PnL)',
+                                      '${AppStrings.returns} (${AppStrings.pnl})',
                                       style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      '$cardPnlSign₹${holdingPnl.toStringAsFixed(2)}',
+                                      FormatUtils.formatCurrency(holdingPnl, includeSign: true),
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
-                                        color: cardPnlColor,
+                                        color: FormatUtils.getPnLColor(holdingPnl),
                                       ),
                                     ),
                                   ],

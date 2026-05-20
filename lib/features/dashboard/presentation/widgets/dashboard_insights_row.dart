@@ -1,4 +1,5 @@
 import 'package:aetram/core/utils/app_sizes.dart';
+import 'package:aetram/core/utils/format_utils.dart';
 import 'package:aetram/features/dashboard/presentation/controllers/dashboard_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class DashboardInsightsRow extends StatelessWidget {
             isDark: isDark,
             title: 'TOP GAINER',
             icon: Icons.rocket_launch_rounded,
-            accent: const Color(0xFF00E676),
+            accent: FormatUtils.positiveColor,
             data: controller.topGainer,
             isGainer: true,
           ),
@@ -29,7 +30,7 @@ class DashboardInsightsRow extends StatelessWidget {
             isDark: isDark,
             title: 'TOP LOSER',
             icon: Icons.trending_down_rounded,
-            accent: const Color(0xFFFF5252),
+            accent: FormatUtils.negativeColor,
             data: controller.topLoser,
             isGainer: false,
           ),
@@ -99,7 +100,7 @@ class DashboardInsightsRow extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      '₹${(data['ltp'] as double).toStringAsFixed(2)}',
+                      FormatUtils.formatCurrency(data['ltp'] as double),
                       style: TextStyle(
                           fontSize: 12, color: Colors.grey.shade500),
                       overflow: TextOverflow.ellipsis,
@@ -114,7 +115,9 @@ class DashboardInsightsRow extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Text(
-                      '${isGainer ? '+' : ''}${(data['changePercentage'] as double).toStringAsFixed(2)}%',
+                      FormatUtils.formatPercentage(
+                          data['changePercentage'] as double,
+                          includeSign: isGainer),
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
