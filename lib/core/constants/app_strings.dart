@@ -27,4 +27,8 @@ class AppStrings {
   static const String liveMarket = 'LIVE MARKET';
 
   static const String reconnecting = 'Reconnecting...';
+
+  static const String chart = 'Chart';
+
+  static const String noRealtimeData = 'No realtime data available';
 }

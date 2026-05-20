@@ -1,1 +1,0 @@
-// Shared User Model

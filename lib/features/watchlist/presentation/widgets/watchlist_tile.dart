@@ -1,3 +1,4 @@
+import 'package:aetram/core/routes/app_routes.dart';
 import 'package:aetram/core/utils/app_sizes.dart';
 import 'package:aetram/features/watchlist/domain/entities/tick_entity.dart';
 import 'package:aetram/features/watchlist/domain/entities/watchlist_item_entity.dart';
@@ -19,6 +20,9 @@ class WatchlistTile extends GetView<WatchlistController> {
 
       return Card(
         child: ListTile(
+          onTap: () {
+            Get.toNamed(AppRoutes.chart, arguments: item.symbol);
+          },
           contentPadding: const EdgeInsets.symmetric(
             horizontal: AppSizes.paddingMedium,
             vertical: AppSizes.paddingSmall,
