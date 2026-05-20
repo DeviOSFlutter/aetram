@@ -1,3 +1,4 @@
+import 'package:aetram/core/constants/app_strings.dart';
 import 'package:aetram/core/di/initial_binding.dart';
 import 'package:aetram/core/routes/app_pages.dart';
 import 'package:aetram/core/theme/app_theme.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'TealVue Market Watch',
+      title: AppStrings.appTitle,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       initialRoute: AppPages.initial,
