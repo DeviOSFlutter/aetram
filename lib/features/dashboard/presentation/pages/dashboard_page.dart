@@ -30,12 +30,14 @@ class DashboardPage extends GetView<DashboardController> {
           ),
         ],
       ),
-      body: Obx(() {
-        if (!controller.hasHoldings) {
-          return const DashboardEmptyState();
-        }
-        return _buildDashboardContent(context, isDark);
-      }),
+      body: GetBuilder<DashboardController>(
+        builder: (controller) {
+          if (!controller.hasHoldings) {
+            return const DashboardEmptyState();
+          }
+          return _buildDashboardContent(context, isDark);
+        },
+      ),
     );
   }
 

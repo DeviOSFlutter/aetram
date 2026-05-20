@@ -12,6 +12,7 @@ class SymbolTile extends GetView<WatchlistController> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();

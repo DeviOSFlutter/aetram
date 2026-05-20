@@ -19,6 +19,7 @@ class WatchlistTile extends GetView<WatchlistController> {
       final TickEntity? tick = controller.getTick(item.symbol);
 
       return Card(
+        clipBehavior: Clip.antiAlias,
         child: ListTile(
           onTap: () {
             Get.toNamed(AppRoutes.chart, arguments: item.symbol);

@@ -20,13 +20,31 @@ class SocketService extends GetxService {
 
   final Set<String> _activeSubscriptions = {};
 
+  final Map<String, Map<String, dynamic>> _pendingTicks = {};
+  Timer? _throttleTimer;
+
   bool get isConnected => _socket.connected;
 
   @override
   void onInit() {
     super.onInit();
 
+    _startThrottler();
+
     connect();
+  }
+
+  void _startThrottler() {
+    _throttleTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      if (_pendingTicks.isNotEmpty) {
+        final Map<String, Map<String, dynamic>> ticksToEmit =
+            Map.from(_pendingTicks);
+        _pendingTicks.clear();
+        for (final tick in ticksToEmit.values) {
+          _tickerStreamController.add(tick);
+        }
+      }
+    });
   }
 
   void connect() {
@@ -84,8 +102,11 @@ class SocketService extends GetxService {
 
         if (data is Map) {
           final Map<String, dynamic> tick = Map<String, dynamic>.from(data);
+          final String symbol = tick['symbol'] ?? tick['SYMBOL'] ?? '';
 
-          _tickerStreamController.add(tick);
+          if (symbol.isNotEmpty) {
+            _pendingTicks[symbol] = tick;
+          }
 
           return;
         }
@@ -95,8 +116,11 @@ class SocketService extends GetxService {
 
           if (first is Map) {
             final Map<String, dynamic> tick = Map<String, dynamic>.from(first);
+            final String symbol = tick['symbol'] ?? tick['SYMBOL'] ?? '';
 
-            _tickerStreamController.add(tick);
+            if (symbol.isNotEmpty) {
+              _pendingTicks[symbol] = tick;
+            }
 
             return;
           }
@@ -159,6 +183,8 @@ class SocketService extends GetxService {
 
   @override
   void onClose() {
+    _throttleTimer?.cancel();
+
     _tickerStreamController.close();
 
     _socket.dispose();

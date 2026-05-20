@@ -29,6 +29,7 @@ class DashboardHoldingsList extends StatelessWidget {
             controller.portfolioController.getHoldingPnLPercentage(holding);
 
         return Container(
+          clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: isDark ? const Color(0xFF1E293B) : Colors.white,

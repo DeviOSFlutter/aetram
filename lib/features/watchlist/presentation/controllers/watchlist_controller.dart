@@ -120,6 +120,7 @@ class WatchlistController extends GetxController {
       final TickModel tick = TickModel.fromJson(event);
 
       liveTicks[tick.symbol] = tick;
+      liveTicks.refresh();
 
       _processCandleTick(tick);
     });
