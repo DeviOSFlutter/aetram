@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Task / reference docs (not part of source)
+*.pdf
+api_docs.md
