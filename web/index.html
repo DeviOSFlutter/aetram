@@ -16,42 +16,9 @@
   -->
   <base href="$FLUTTER_BASE_HREF">
 
-  <script>
-    (function() {
-      try {
-        if (window.visualViewport) {
-          var originalViewport = window.visualViewport;
-          var proxyViewport = new Proxy(originalViewport, {
-            get: function(target, prop, receiver) {
-              if (prop === 'height') {
-                return Math.min(originalViewport.height, window.innerHeight);
-              }
-              if (prop === 'width') {
-                return Math.min(originalViewport.width, window.innerWidth);
-              }
-              var value = Reflect.get(target, prop, receiver);
-              if (typeof value === 'function') {
-                return value.bind(target);
-              }
-              return value;
-            }
-          });
-          Object.defineProperty(window, 'visualViewport', {
-            value: proxyViewport,
-            writable: true,
-            configurable: true
-          });
-        }
-      } catch (e) {
-        console.warn("VisualViewport proxy could not be initialized:", e);
-      }
-    })();
-  </script>
-
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
