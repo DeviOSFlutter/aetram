@@ -1,6 +1,15 @@
+import 'package:aetram/core/di/initial_binding.dart';
+import 'package:aetram/core/routes/app_pages.dart';
+import 'package:aetram/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await GetStorage.init();
+
   runApp(const MyApp());
 }
 
@@ -9,13 +18,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'TealVue Market Watch',
-      home: Scaffold(
-        body: Center(
-          child: Text('TealVue Market Watch'),
-        ),
-      ),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      initialRoute: AppPages.initial,
+      getPages: AppPages.routes,
+      initialBinding: InitialBinding(),
     );
   }
 }
