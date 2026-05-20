@@ -7,37 +7,40 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CandleChart extends StatefulWidget {
+class _CandleChartController extends GetxController {
+  final viewportWidth = Rxn<double>();
+  final scrollOffset = 0.0.obs;
+
+  double dragStartScrollOffset = 0.0;
+  double scaleStartViewportWidth = 30.0;
+  Offset scaleStartFocalPoint = Offset.zero;
+
+  ChartRange? lastRange;
+  String? lastSymbol;
+
+  void resetView() {
+    viewportWidth.value = null;
+    scrollOffset.value = 0.0;
+  }
+}
+
+class CandleChart extends StatelessWidget {
   const CandleChart({super.key});
 
   @override
-  State<CandleChart> createState() => _CandleChartState();
-}
-
-class _CandleChartState extends State<CandleChart> {
-  double? _customViewportWidth;
-  double _scrollOffset = 0.0;
-
-  double _dragStartScrollOffset = 0.0;
-  double _scaleStartViewportWidth = 30.0;
-  Offset _scaleStartFocalPoint = Offset.zero;
-
-  ChartRange? _lastRange;
-  String? _lastSymbol;
-
-  @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ChartController>();
+    final chartController = Get.find<ChartController>();
+    final state = Get.put(_CandleChartController());
 
     return Obx(() {
-      if (controller.isLoading.value) {
+      if (chartController.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
 
-      final candles = controller.candles;
+      final candles = chartController.candles;
 
       if (candles.isEmpty) {
-        if (controller.selectedRange.value == ChartRange.oneDay) {
+        if (chartController.selectedRange.value == ChartRange.oneDay) {
           return const Center(child: Text('Waiting for live market data...'));
         } else {
           return const Center(
@@ -46,46 +49,46 @@ class _CandleChartState extends State<CandleChart> {
         }
       }
 
-      final range = controller.selectedRange.value;
-      final symbol = controller.selectedSymbol.value;
+      final range = chartController.selectedRange.value;
+      final symbol = chartController.selectedSymbol.value;
 
       // Automatically reset zoom and pan on range or symbol change
-      if (_lastRange != range || _lastSymbol != symbol) {
-        _lastRange = range;
-        _lastSymbol = symbol;
-        _customViewportWidth = null;
-        _scrollOffset = 0.0;
+      if (state.lastRange != range || state.lastSymbol != symbol) {
+        state.lastRange = range;
+        state.lastSymbol = symbol;
+        state.viewportWidth.value = null;
+        state.scrollOffset.value = 0.0;
       }
 
       final double totalLength = candles.length.toDouble();
-      final double defaultWidth = (range == ChartRange.oneDay)
-          ? min(30.0, totalLength)
-          : totalLength;
+      final double defaultWidth =
+          (range == ChartRange.oneDay) ? min(30.0, totalLength) : totalLength;
 
-      double viewportWidth = _customViewportWidth ?? defaultWidth;
+      double vw = state.viewportWidth.value ?? defaultWidth;
       // Clamp viewportWidth to be between 5.0 and the total length
-      viewportWidth = viewportWidth.clamp(5.0, max(5.0, totalLength));
+      vw = vw.clamp(5.0, max(5.0, totalLength));
 
       // Clamp scrollOffset to be between 0.0 and (totalLength - viewportWidth)
-      final double maxScroll = max(0.0, totalLength - viewportWidth);
-      _scrollOffset = _scrollOffset.clamp(0.0, maxScroll);
+      final double maxScroll = max(0.0, totalLength - vw);
+      state.scrollOffset.value = state.scrollOffset.value.clamp(0.0, maxScroll);
 
-      double maxX = totalLength - 1.0 - _scrollOffset;
-      double minX = maxX - viewportWidth + 1.0;
+      double maxX = totalLength - 1.0 - state.scrollOffset.value;
+      double minX = maxX - vw + 1.0;
 
       // Ensure minX does not drop below 0.0
       if (minX < 0.0) {
         minX = 0.0;
-        maxX = minX + viewportWidth - 1.0;
+        maxX = minX + vw - 1.0;
       }
 
       // Calculate indices for visible subset of candles to scale Y-axis dynamically
       final int startIdx = max(0, minX.floor());
       final int endIdx = min(candles.length - 1, maxX.ceil());
 
-      final List<CandleEntity> visibleCandles = (startIdx <= endIdx && startIdx < candles.length)
-          ? candles.sublist(startIdx, endIdx + 1)
-          : candles;
+      final List<CandleEntity> visibleCandles =
+          (startIdx <= endIdx && startIdx < candles.length)
+              ? candles.sublist(startIdx, endIdx + 1)
+              : candles;
 
       final List<double> highs = visibleCandles.map((e) => e.high).toList();
       final List<double> lows = visibleCandles.map((e) => e.low).toList();
@@ -117,29 +120,26 @@ class _CandleChartState extends State<CandleChart> {
         children: [
           GestureDetector(
             onScaleStart: (details) {
-              _dragStartScrollOffset = _scrollOffset;
-              _scaleStartViewportWidth = _customViewportWidth ?? defaultWidth;
-              _scaleStartFocalPoint = details.focalPoint;
+              state.dragStartScrollOffset = state.scrollOffset.value;
+              state.scaleStartViewportWidth = state.viewportWidth.value ?? defaultWidth;
+              state.scaleStartFocalPoint = details.focalPoint;
             },
             onScaleUpdate: (details) {
-              setState(() {
-                // 1. Handle Zoom (Scale)
-                if (details.scale != 1.0) {
-                  final double newWidth = _scaleStartViewportWidth / details.scale;
-                  _customViewportWidth = newWidth.clamp(5.0, max(5.0, totalLength));
-                }
+              if (details.scale != 1.0) {
+                final double newWidth = state.scaleStartViewportWidth / details.scale;
+                state.viewportWidth.value = newWidth.clamp(5.0, max(5.0, totalLength));
+              }
 
-                // 2. Handle Pan (cumulative focal point delta)
-                final double deltaX = details.focalPoint.dx - _scaleStartFocalPoint.dx;
-                // pixelToSpotRatio maps how many candles correspond to 1 pixel of movement.
-                // Assuming a typical viewport layout width of around 350.0 pixels
-                final double pixelToSpotRatio = viewportWidth / 350.0;
+              final double deltaX = details.focalPoint.dx - state.scaleStartFocalPoint.dx;
+              // pixelToSpotRatio maps how many candles correspond to 1 pixel of movement.
+              // Assuming a typical viewport layout width of around 350.0 pixels
+              final double pixelToSpotRatio = vw / 350.0;
 
-                _scrollOffset = _dragStartScrollOffset + (deltaX * pixelToSpotRatio);
-                final double currentWidth = _customViewportWidth ?? defaultWidth;
-                final double maxScroll = max(0.0, totalLength - currentWidth);
-                _scrollOffset = _scrollOffset.clamp(0.0, maxScroll);
-              });
+              final double currentWidth = state.viewportWidth.value ?? defaultWidth;
+              final double currentMaxScroll = max(0.0, totalLength - currentWidth);
+              state.scrollOffset.value =
+                  (state.dragStartScrollOffset + (deltaX * pixelToSpotRatio))
+                      .clamp(0.0, currentMaxScroll);
             },
             child: Container(
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
@@ -252,17 +252,12 @@ class _CandleChartState extends State<CandleChart> {
               ),
             ),
           ),
-          if (_customViewportWidth != null || _scrollOffset > 0.0)
+          if (state.viewportWidth.value != null || state.scrollOffset.value > 0.0)
             Positioned(
               top: 10,
               right: 10,
               child: ElevatedButton.icon(
-                onPressed: () {
-                  setState(() {
-                    _customViewportWidth = null;
-                    _scrollOffset = 0.0;
-                  });
-                },
+                onPressed: state.resetView,
                 icon: const Icon(Icons.zoom_out_map, size: 14),
                 label: const Text('Reset View', style: TextStyle(fontSize: 12)),
                 style: ElevatedButton.styleFrom(

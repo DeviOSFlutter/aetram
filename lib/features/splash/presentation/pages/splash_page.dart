@@ -58,7 +58,7 @@ class SplashPage extends GetView<ThemeController> {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.offNamed(AppRoutes.watchlist);
+                      Get.offNamed(AppRoutes.main);
                     },
                     child: const Text(AppStrings.getStarted),
                   ),

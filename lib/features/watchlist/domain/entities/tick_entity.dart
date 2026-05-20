@@ -9,7 +9,6 @@ class TickEntity {
 
   final DateTime? timestamp;
 
-  /// Average Traded Price (VWAP) — nullable, populated only when the server sends it.
   final double? atp;
 
   const TickEntity({

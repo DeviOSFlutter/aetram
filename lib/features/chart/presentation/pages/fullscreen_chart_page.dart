@@ -1,19 +1,12 @@
 import 'package:aetram/features/chart/presentation/widgets/candle_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
-class FullscreenChartPage extends StatefulWidget {
-  const FullscreenChartPage({super.key});
-
+class _FullscreenController extends GetxController {
   @override
-  State<FullscreenChartPage> createState() => _FullscreenChartPageState();
-}
-
-class _FullscreenChartPageState extends State<FullscreenChartPage> {
-  @override
-  void initState() {
-    super.initState();
-
+  void onInit() {
+    super.onInit();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
@@ -21,14 +14,18 @@ class _FullscreenChartPageState extends State<FullscreenChartPage> {
   }
 
   @override
-  void dispose() {
+  void onClose() {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-    super.dispose();
+    super.onClose();
   }
+}
+
+class FullscreenChartPage extends StatelessWidget {
+  const FullscreenChartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(_FullscreenController());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -41,9 +38,7 @@ class _FullscreenChartPageState extends State<FullscreenChartPage> {
                 top: 0,
                 right: 0,
                 child: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  onPressed: () => Get.back(),
                   icon: const Icon(Icons.close, size: 28),
                 ),
               ),

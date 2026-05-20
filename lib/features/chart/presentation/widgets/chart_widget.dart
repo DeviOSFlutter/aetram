@@ -1,1 +1,0 @@
-// hart Inline Widget Component

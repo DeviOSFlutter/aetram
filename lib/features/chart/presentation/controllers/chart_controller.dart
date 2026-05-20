@@ -43,7 +43,6 @@ class ChartController extends GetxController {
 
     selectedSymbol.value = Get.arguments ?? '';
     
-    // Register active chart symbol to merge it into socket subscriptions
     _watchlistController.setActiveChartSymbol(selectedSymbol.value);
 
     _loadInitialOneDayData();
@@ -70,7 +69,6 @@ class ChartController extends GetxController {
       );
       oneDayCandles.assignAll(result);
 
-      // Find the latest loaded timestamp for deduplication
       if (oneDayCandles.isNotEmpty) {
         DateTime? maxTime;
         for (var candle in oneDayCandles) {
