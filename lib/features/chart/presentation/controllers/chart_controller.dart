@@ -42,7 +42,7 @@ class ChartController extends GetxController {
     super.onInit();
 
     selectedSymbol.value = Get.arguments ?? '';
-    
+
     _watchlistController.setActiveChartSymbol(selectedSymbol.value);
 
     _loadInitialOneDayData();

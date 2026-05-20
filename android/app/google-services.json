@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "558358802038",
+    "project_id": "tasktealvue",
+    "storage_bucket": "tasktealvue.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558358802038:android:82ec9f045b19cfa7dc3957",
+        "android_client_info": {
+          "package_name": "com.example.aetram"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUJN5MeRSqg0PyWavO8HB-0qhYAAGWAtU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

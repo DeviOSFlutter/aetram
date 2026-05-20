@@ -63,8 +63,9 @@ class CandleChart extends StatelessWidget {
       }
 
       final double totalLength = candles.length.toDouble();
-      final double defaultWidth =
-          (range == ChartRange.oneDay) ? min(30.0, totalLength) : totalLength;
+      final double defaultWidth = (range == ChartRange.oneDay)
+          ? min(30.0, totalLength)
+          : totalLength;
 
       double vw = state.viewportWidth.value ?? defaultWidth;
       // Clamp viewportWidth to be between 5.0 and the total length
@@ -89,8 +90,8 @@ class CandleChart extends StatelessWidget {
 
       final List<CandleEntity> visibleCandles =
           (startIdx <= endIdx && startIdx < candles.length)
-              ? candles.sublist(startIdx, endIdx + 1)
-              : candles;
+          ? candles.sublist(startIdx, endIdx + 1)
+          : candles;
 
       final List<double> highs = visibleCandles.map((e) => e.high).toList();
       final List<double> lows = visibleCandles.map((e) => e.low).toList();
@@ -123,28 +124,40 @@ class CandleChart extends StatelessWidget {
           GestureDetector(
             onScaleStart: (details) {
               state.dragStartScrollOffset = state.scrollOffset.value;
-              state.scaleStartViewportWidth = state.viewportWidth.value ?? defaultWidth;
+              state.scaleStartViewportWidth =
+                  state.viewportWidth.value ?? defaultWidth;
               state.scaleStartFocalPoint = details.focalPoint;
             },
             onScaleUpdate: (details) {
               if (details.scale != 1.0) {
-                final double newWidth = state.scaleStartViewportWidth / details.scale;
-                state.viewportWidth.value = newWidth.clamp(5.0, max(5.0, totalLength));
+                final double newWidth =
+                    state.scaleStartViewportWidth / details.scale;
+                state.viewportWidth.value = newWidth.clamp(
+                  5.0,
+                  max(5.0, totalLength),
+                );
               }
 
-              final double deltaX = details.focalPoint.dx - state.scaleStartFocalPoint.dx;
+              final double deltaX =
+                  details.focalPoint.dx - state.scaleStartFocalPoint.dx;
               // pixelToSpotRatio maps how many candles correspond to 1 pixel of movement.
               // Assuming a typical viewport layout width of around 350.0 pixels
               final double pixelToSpotRatio = vw / 350.0;
 
-              final double currentWidth = state.viewportWidth.value ?? defaultWidth;
-              final double currentMaxScroll = max(0.0, totalLength - currentWidth);
+              final double currentWidth =
+                  state.viewportWidth.value ?? defaultWidth;
+              final double currentMaxScroll = max(
+                0.0,
+                totalLength - currentWidth,
+              );
               state.scrollOffset.value =
                   (state.dragStartScrollOffset + (deltaX * pixelToSpotRatio))
                       .clamp(0.0, currentMaxScroll);
             },
             child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: LineChart(
                 LineChartData(
                   minX: minX,
@@ -231,7 +244,10 @@ class CandleChart extends StatelessWidget {
                       preventCurveOverShooting: true,
                       color: chartColor,
                       gradient: LinearGradient(
-                        colors: [chartColor, chartColor.withValues(alpha: 0.75)],
+                        colors: [
+                          chartColor,
+                          chartColor.withValues(alpha: 0.75),
+                        ],
                       ),
                       barWidth: 3.5,
                       isStrokeCapRound: true,
@@ -254,7 +270,8 @@ class CandleChart extends StatelessWidget {
               ),
             ),
           ),
-          if (state.viewportWidth.value != null || state.scrollOffset.value > 0.0)
+          if (state.viewportWidth.value != null ||
+              state.scrollOffset.value > 0.0)
             Positioned(
               top: 10,
               right: 10,
@@ -266,8 +283,13 @@ class CandleChart extends StatelessWidget {
                   backgroundColor: Colors.black.withValues(alpha: 0.7),
                   foregroundColor: Colors.white,
                   elevation: 2,
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
             ),

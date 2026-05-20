@@ -1,6 +1,1 @@
-enum SocketStatus {
-  connected,
-  disconnected,
-  connecting,
-  error,
-}
+enum SocketStatus { connected, disconnected, connecting, error }

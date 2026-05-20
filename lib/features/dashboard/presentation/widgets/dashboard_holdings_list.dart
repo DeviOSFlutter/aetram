@@ -23,10 +23,11 @@ class DashboardHoldingsList extends StatelessWidget {
         final ltp = controller.portfolioController.getLtp(holding.symbol);
         final atp = controller.portfolioController.getAtp(holding.symbol);
         final double liveLtp = ltp > 0 ? ltp : holding.averageBuyPrice;
-        final double holdingPnl =
-            controller.portfolioController.getHoldingPnL(holding);
-        final double holdingPnlPct =
-            controller.portfolioController.getHoldingPnLPercentage(holding);
+        final double holdingPnl = controller.portfolioController.getHoldingPnL(
+          holding,
+        );
+        final double holdingPnlPct = controller.portfolioController
+            .getHoldingPnLPercentage(holding);
 
         return Container(
           clipBehavior: Clip.antiAlias,
@@ -55,13 +56,17 @@ class DashboardHoldingsList extends StatelessWidget {
                           Text(
                             holding.symbol,
                             style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             '${holding.quantity.toStringAsFixed(0)} qty  ·  avg ${FormatUtils.formatCurrency(holding.averageBuyPrice)}',
                             style: TextStyle(
-                                fontSize: 12, color: Colors.grey.shade500),
+                              fontSize: 12,
+                              color: Colors.grey.shade500,
+                            ),
                           ),
                         ],
                       ),
@@ -73,21 +78,28 @@ class DashboardHoldingsList extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: ltp > 0 ? Theme.of(context).primaryColor : null,
+                              color: ltp > 0
+                                  ? Theme.of(context).primaryColor
+                                  : null,
                             ),
                           ),
                           const SizedBox(height: 2),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 2),
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
                             decoration: BoxDecoration(
-                              color: FormatUtils.getPnLColor(holdingPnl)
-                                  .withValues(alpha: 0.12),
+                              color: FormatUtils.getPnLColor(
+                                holdingPnl,
+                              ).withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
-                              FormatUtils.formatPercentage(holdingPnlPct,
-                                  includeSign: true),
+                              FormatUtils.formatPercentage(
+                                holdingPnlPct,
+                                includeSign: true,
+                              ),
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold,
@@ -103,7 +115,9 @@ class DashboardHoldingsList extends StatelessWidget {
                     const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 6),
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: isDark
                             ? Colors.white.withValues(alpha: 0.04)
@@ -115,22 +129,25 @@ class DashboardHoldingsList extends StatelessWidget {
                         children: [
                           const Text(
                             'LTP vs VWAP',
-                            style: TextStyle(
-                                fontSize: 11, color: Colors.teal),
+                            style: TextStyle(fontSize: 11, color: Colors.teal),
                           ),
                           Row(
                             children: [
                               Text(
                                 FormatUtils.formatCurrency(liveLtp),
                                 style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: Theme.of(context).primaryColor),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  color: Theme.of(context).primaryColor,
+                                ),
                               ),
-                              Text('  vs  ',
-                                  style: TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.grey.shade500)),
+                              Text(
+                                '  vs  ',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.grey.shade500,
+                                ),
+                              ),
                               Text(
                                 FormatUtils.formatCurrency(atp),
                                 style: TextStyle(

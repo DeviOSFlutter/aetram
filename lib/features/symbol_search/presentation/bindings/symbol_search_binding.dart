@@ -10,27 +10,19 @@ class SymbolSearchBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<SymbolRemoteDataSource>(
-      () => SymbolRemoteDataSource(
-        Get.find<DioClient>(),
-      ),
+      () => SymbolRemoteDataSource(Get.find<DioClient>()),
     );
 
     Get.lazyPut<SymbolRepository>(
-      () => SymbolRepositoryImpl(
-        Get.find<SymbolRemoteDataSource>(),
-      ),
+      () => SymbolRepositoryImpl(Get.find<SymbolRemoteDataSource>()),
     );
 
     Get.lazyPut<GetSymbolsUseCase>(
-      () => GetSymbolsUseCase(
-        Get.find<SymbolRepository>(),
-      ),
+      () => GetSymbolsUseCase(Get.find<SymbolRepository>()),
     );
 
     Get.lazyPut<SymbolSearchController>(
-      () => SymbolSearchController(
-        Get.find<GetSymbolsUseCase>(),
-      ),
+      () => SymbolSearchController(Get.find<GetSymbolsUseCase>()),
     );
   }
 }

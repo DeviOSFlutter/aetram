@@ -14,9 +14,13 @@ class PortfolioLocalDataSource {
       return [];
     }
     try {
-      final List<dynamic> decodedList = jsonDecode(holdingsJson) as List<dynamic>;
+      final List<dynamic> decodedList =
+          jsonDecode(holdingsJson) as List<dynamic>;
       return decodedList
-          .map((item) => PortfolioHoldingModel.fromJson(item as Map<String, dynamic>))
+          .map(
+            (item) =>
+                PortfolioHoldingModel.fromJson(item as Map<String, dynamic>),
+          )
           .toList();
     } catch (e) {
       return [];

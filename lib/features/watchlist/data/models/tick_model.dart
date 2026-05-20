@@ -22,10 +22,10 @@ class TickModel extends TickEntity {
       timestamp: json['TS'] != null
           ? DateTime.tryParse(json['TS'].toString())
           : (json['ts'] != null
-              ? DateTime.tryParse(json['ts'].toString())
-              : (json['timestamp'] != null
-                  ? DateTime.tryParse(json['timestamp'].toString())
-                  : null)),
+                ? DateTime.tryParse(json['ts'].toString())
+                : (json['timestamp'] != null
+                      ? DateTime.tryParse(json['timestamp'].toString())
+                      : null)),
     );
   }
 }

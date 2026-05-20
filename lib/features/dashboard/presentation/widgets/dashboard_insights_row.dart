@@ -84,14 +84,17 @@ class DashboardInsightsRow extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             if (data == null)
-              Text('N/A',
-                  style: TextStyle(
-                      fontSize: 14, color: Colors.grey.shade400))
+              Text(
+                'N/A',
+                style: TextStyle(fontSize: 14, color: Colors.grey.shade400),
+              )
             else ...[
               Text(
                 data['symbol'] as String,
                 style: const TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.w900),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -102,22 +105,27 @@ class DashboardInsightsRow extends StatelessWidget {
                     child: Text(
                       FormatUtils.formatCurrency(data['ltp'] as double),
                       style: TextStyle(
-                          fontSize: 12, color: Colors.grey.shade500),
+                        fontSize: 12,
+                        color: Colors.grey.shade500,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   const SizedBox(width: 6),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 5,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: accent.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Text(
                       FormatUtils.formatPercentage(
-                          data['changePercentage'] as double,
-                          includeSign: isGainer),
+                        data['changePercentage'] as double,
+                        includeSign: isGainer,
+                      ),
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,

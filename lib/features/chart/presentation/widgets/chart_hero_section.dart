@@ -27,7 +27,8 @@ class ChartHeroSection extends StatelessWidget {
   void _showBuySheet(BuildContext context, double currentLtp) {
     final qtyController = TextEditingController();
     final priceController = TextEditingController(
-        text: currentLtp > 0 ? currentLtp.toStringAsFixed(2) : '');
+      text: currentLtp > 0 ? currentLtp.toStringAsFixed(2) : '',
+    );
     final formKey = GlobalKey<FormState>();
 
     Get.bottomSheet(
@@ -60,8 +61,8 @@ class ChartHeroSection extends StatelessWidget {
                     Text(
                       'BUY $symbol',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
@@ -72,8 +73,9 @@ class ChartHeroSection extends StatelessWidget {
                 AppSizes.verticalSpaceMedium,
                 TextFormField(
                   controller: qtyController,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: false),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: false,
+                  ),
                   decoration: const InputDecoration(
                     labelText: 'Quantity',
                     border: OutlineInputBorder(),
@@ -93,8 +95,9 @@ class ChartHeroSection extends StatelessWidget {
                 AppSizes.verticalSpaceMedium,
                 TextFormField(
                   controller: priceController,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   decoration: const InputDecoration(
                     labelText: 'Average Buy Price (₹)',
                     border: OutlineInputBorder(),
@@ -189,18 +192,16 @@ class ChartHeroSection extends StatelessWidget {
         children: [
           Text(
             symbol,
-            style: Theme.of(context)
-                .textTheme
-                .headlineMedium
-                ?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           AppSizes.verticalSpaceMedium,
           Text(
             ltp != null ? FormatUtils.formatCurrency(ltp!) : '₹--',
-            style: Theme.of(context)
-                .textTheme
-                .displayMedium
-                ?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(
+              context,
+            ).textTheme.displayMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           AppSizes.verticalSpaceSmall,
           Obx(
@@ -208,8 +209,8 @@ class ChartHeroSection extends StatelessWidget {
               controller.selectedRange.value == ChartRange.oneDay
                   ? 'Live Market Session'
                   : controller.selectedRange.value == ChartRange.oneWeek
-                      ? '1 Week Historical'
-                      : '1 Month Historical',
+                  ? '1 Week Historical'
+                  : '1 Month Historical',
               style: TextStyle(
                 color: Colors.grey.shade400,
                 fontSize: 14,
@@ -247,8 +248,10 @@ class ChartHeroSection extends StatelessWidget {
               icon: const Icon(Icons.shopping_cart, size: 18),
               label: const Text(
                 'BUY NOW',
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.1),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.1,
+                ),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: FormatUtils.getPnLColor(change ?? 0),

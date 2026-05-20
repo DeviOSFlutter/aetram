@@ -37,8 +37,11 @@ class AboutHeroCard extends StatelessWidget {
                 color: Colors.white.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Icon(Icons.show_chart_rounded,
-                  size: 40, color: Colors.white),
+              child: const Icon(
+                Icons.show_chart_rounded,
+                size: 40,
+                color: Colors.white,
+              ),
             ),
             AppSizes.horizontalSpaceMedium,
             Expanded(

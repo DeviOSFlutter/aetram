@@ -50,8 +50,9 @@ class DashboardStatsGrid extends StatelessWidget {
     // On web/desktop/tablet (width > 600), show 4 items in a row. Otherwise show 2.
     final int crossAxisCount = width > 600 ? 4 : 2;
     // Adjust aspect ratio to keep cards looking perfectly sized.
-    final double childAspectRatio =
-        width > 900 ? 2.3 : (width > 600 ? 1.9 : 1.65);
+    final double childAspectRatio = width > 900
+        ? 2.3
+        : (width > 600 ? 1.9 : 1.65);
 
     return GridView.count(
       crossAxisCount: crossAxisCount,
@@ -86,8 +87,7 @@ class DashboardStatsGrid extends StatelessWidget {
                     color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child:
-                      Icon(stat['icon'] as IconData, size: 16, color: color),
+                  child: Icon(stat['icon'] as IconData, size: 16, color: color),
                 ),
                 const Spacer(),
                 Text(

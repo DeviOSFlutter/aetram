@@ -15,17 +15,23 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
 
   @override
   Future<void> saveHolding(PortfolioHoldingEntity holding) async {
-    final List<PortfolioHoldingModel> holdings = await _localDataSource.getHoldings();
-    
-    final int existingIndex = holdings.indexWhere((h) => h.symbol == holding.symbol);
-    
+    final List<PortfolioHoldingModel> holdings = await _localDataSource
+        .getHoldings();
+
+    final int existingIndex = holdings.indexWhere(
+      (h) => h.symbol == holding.symbol,
+    );
+
     if (existingIndex >= 0) {
       final PortfolioHoldingModel oldHolding = holdings[existingIndex];
       final double totalQuantity = oldHolding.quantity + holding.quantity;
-      final double totalCost = (oldHolding.quantity * oldHolding.averageBuyPrice) + 
-                               (holding.quantity * holding.averageBuyPrice);
-      final double newAveragePrice = totalQuantity > 0 ? (totalCost / totalQuantity) : 0.0;
-      
+      final double totalCost =
+          (oldHolding.quantity * oldHolding.averageBuyPrice) +
+          (holding.quantity * holding.averageBuyPrice);
+      final double newAveragePrice = totalQuantity > 0
+          ? (totalCost / totalQuantity)
+          : 0.0;
+
       holdings[existingIndex] = PortfolioHoldingModel(
         symbol: holding.symbol,
         quantity: totalQuantity,
@@ -33,14 +39,16 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
         createdAt: oldHolding.createdAt,
       );
     } else {
-      holdings.add(PortfolioHoldingModel(
-        symbol: holding.symbol,
-        quantity: holding.quantity,
-        averageBuyPrice: holding.averageBuyPrice,
-        createdAt: holding.createdAt,
-      ));
+      holdings.add(
+        PortfolioHoldingModel(
+          symbol: holding.symbol,
+          quantity: holding.quantity,
+          averageBuyPrice: holding.averageBuyPrice,
+          createdAt: holding.createdAt,
+        ),
+      );
     }
-    
+
     await _localDataSource.saveHoldings(holdings);
   }
 }

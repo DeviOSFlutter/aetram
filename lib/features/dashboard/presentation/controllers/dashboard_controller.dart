@@ -57,12 +57,12 @@ class DashboardController extends GetxController {
   }
 
   Map<String, dynamic>? get topGainer {
-    final list = holdings.isNotEmpty 
-        ? holdings.map((h) => h.symbol).toList() 
+    final list = holdings.isNotEmpty
+        ? holdings.map((h) => h.symbol).toList()
         : _watchlistController.watchlist.map((w) => w.symbol).toList();
-        
+
     if (list.isEmpty) return null;
-    
+
     String? bestSym;
     double maxChg = -double.infinity;
     for (final sym in list) {
@@ -83,12 +83,12 @@ class DashboardController extends GetxController {
   }
 
   Map<String, dynamic>? get topLoser {
-    final list = holdings.isNotEmpty 
-        ? holdings.map((h) => h.symbol).toList() 
+    final list = holdings.isNotEmpty
+        ? holdings.map((h) => h.symbol).toList()
         : _watchlistController.watchlist.map((w) => w.symbol).toList();
-        
+
     if (list.isEmpty) return null;
-    
+
     String? worstSym;
     double minChg = double.infinity;
     for (final sym in list) {

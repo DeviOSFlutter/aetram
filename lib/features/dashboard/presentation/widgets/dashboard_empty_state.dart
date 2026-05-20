@@ -41,16 +41,16 @@ class DashboardEmptyState extends StatelessWidget {
               Text(
                 AppStrings.emptyPortfolioTitle,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               AppSizes.verticalSpaceSmall,
               Text(
                 AppStrings.emptyPortfolioSubtitle,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey.shade500,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: Colors.grey.shade500),
                 textAlign: TextAlign.center,
               ),
               AppSizes.verticalSpaceLarge,
@@ -84,7 +84,7 @@ class DashboardEmptyState extends StatelessWidget {
       AppStrings.investedValue,
       AppStrings.currentVal,
       AppStrings.totalPnL,
-      AppStrings.pnlPercent
+      AppStrings.pnlPercent,
     ];
     return GridView.count(
       crossAxisCount: 2,

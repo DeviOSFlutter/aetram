@@ -16,16 +16,14 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('About'),
-      ),
+      appBar: AppBar(title: const Text('About')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSizes.paddingMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const AboutHeroCard(),
-            AppSizes.verticalSpaceMedium,
+            AppSizes.verticalSpaceLarge,
             const AboutAssignmentCard(assignmentId: _assignmentId),
             AppSizes.verticalSpaceMedium,
             AboutSectionCard(

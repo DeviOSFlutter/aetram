@@ -8,17 +8,10 @@ class SymbolRemoteDataSource {
   SymbolRemoteDataSource(this._dioClient);
 
   Future<List<SymbolModel>> getSymbols() async {
-    final response = await _dioClient.get(
-      ApiConstants.symbols,
-    );
+    final response = await _dioClient.get(ApiConstants.symbols);
 
-    final List<dynamic> data =
-        response.data['data'] ?? [];
+    final List<dynamic> data = response.data['data'] ?? [];
 
-    return data
-        .map(
-          (json) => SymbolModel.fromJson(json),
-        )
-        .toList();
+    return data.map((json) => SymbolModel.fromJson(json)).toList();
   }
 }

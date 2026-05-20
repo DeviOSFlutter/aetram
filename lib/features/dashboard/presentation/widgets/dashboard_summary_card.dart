@@ -53,8 +53,10 @@ class DashboardSummaryCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
@@ -62,9 +64,10 @@ class DashboardSummaryCard extends StatelessWidget {
                   child: Text(
                     '${controller.holdingsCount} Holdings',
                     style: const TextStyle(
-                        fontSize: 11,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
+                      fontSize: 11,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ],
@@ -73,23 +76,29 @@ class DashboardSummaryCard extends StatelessWidget {
             Text(
               FormatUtils.formatCurrency(current),
               style: const TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white),
+                fontSize: 32,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _summarySubCol(
-                    AppStrings.invested, FormatUtils.formatCurrency(invested)),
+                  AppStrings.invested,
+                  FormatUtils.formatCurrency(invested),
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(AppStrings.returns,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white.withValues(alpha: 0.6))),
+                    Text(
+                      AppStrings.returns,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white.withValues(alpha: 0.6),
+                      ),
+                    ),
                     const SizedBox(height: 2),
                     Row(
                       children: [
@@ -104,26 +113,33 @@ class DashboardSummaryCard extends StatelessWidget {
                         Text(
                           FormatUtils.formatCurrency(pnl, includeSign: true),
                           style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: FormatUtils.getPnLColor(pnl)),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: FormatUtils.getPnLColor(pnl),
+                          ),
                         ),
                         const SizedBox(width: 6),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 2),
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
-                            color: FormatUtils.getPnLColor(pnl)
-                                .withValues(alpha: 0.15),
+                            color: FormatUtils.getPnLColor(
+                              pnl,
+                            ).withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            FormatUtils.formatPercentage(pnlPct,
-                                includeSign: true),
+                            FormatUtils.formatPercentage(
+                              pnlPct,
+                              includeSign: true,
+                            ),
                             style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: FormatUtils.getPnLColor(pnl)),
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: FormatUtils.getPnLColor(pnl),
+                            ),
                           ),
                         ),
                       ],
@@ -142,15 +158,22 @@ class DashboardSummaryCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: TextStyle(
-                fontSize: 12, color: Colors.white.withValues(alpha: 0.6))),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.white.withValues(alpha: 0.6),
+          ),
+        ),
         const SizedBox(height: 2),
-        Text(value,
-            style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white)),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
       ],
     );
   }

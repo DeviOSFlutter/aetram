@@ -76,21 +76,23 @@ class DashboardPerformanceCards extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             if (holding == null)
-              Text('N/A',
-                  style: TextStyle(
-                      fontSize: 14, color: Colors.grey.shade400))
+              Text(
+                'N/A',
+                style: TextStyle(fontSize: 14, color: Colors.grey.shade400),
+              )
             else ...[
               Text(
                 holding.symbol,
                 style: const TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.w900),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w900,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 4),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: accent.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(6),

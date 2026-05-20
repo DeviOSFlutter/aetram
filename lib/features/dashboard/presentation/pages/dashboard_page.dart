@@ -53,7 +53,7 @@ class DashboardPage extends GetView<DashboardController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DashboardSummaryCard(controller: controller),
-              AppSizes.verticalSpaceMedium,
+              AppSizes.verticalSpaceLarge,
               DashboardStatsGrid(controller: controller),
               if (multipleHoldings) ...[
                 AppSizes.verticalSpaceMedium,

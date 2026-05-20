@@ -19,10 +19,9 @@ class ThemeController extends GetxController {
   void toggleTheme() {
     final bool enableDarkMode = !Get.isDarkMode;
 
-    final ThemeMode themeMode =
-        enableDarkMode
-            ? ThemeMode.dark
-            : ThemeMode.light;
+    final ThemeMode themeMode = enableDarkMode
+        ? ThemeMode.dark
+        : ThemeMode.light;
 
     Get.changeThemeMode(themeMode);
 
@@ -32,14 +31,9 @@ class ThemeController extends GetxController {
   }
 
   void loadTheme() {
-    final bool isDarkMode =
-        _storageService.getThemeMode();
+    final bool isDarkMode = _storageService.getThemeMode();
 
-    Get.changeThemeMode(
-      isDarkMode
-          ? ThemeMode.dark
-          : ThemeMode.light,
-    );
+    Get.changeThemeMode(isDarkMode ? ThemeMode.dark : ThemeMode.light);
 
     update();
   }

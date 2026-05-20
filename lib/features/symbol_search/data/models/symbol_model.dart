@@ -9,9 +9,7 @@ class SymbolModel extends SymbolEntity {
     required super.isActive,
   });
 
-  factory SymbolModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory SymbolModel.fromJson(Map<String, dynamic> json) {
     return SymbolModel(
       symbol: json['symbol'] ?? '',
       name: json['name'] ?? '',

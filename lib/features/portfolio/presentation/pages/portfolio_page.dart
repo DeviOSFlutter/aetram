@@ -15,9 +15,7 @@ class PortfolioPage extends GetView<PortfolioController> {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Portfolio'),
-      ),
+      appBar: AppBar(title: const Text('My Portfolio')),
       body: Obx(() {
         if (controller.isLoading.value) {
           return const AppLoader();
@@ -34,7 +32,9 @@ class PortfolioPage extends GetView<PortfolioController> {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withValues(alpha: isDark ? 0.1 : 0.05),
+                      color: Theme.of(
+                        context,
+                      ).primaryColor.withValues(alpha: isDark ? 0.1 : 0.05),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -47,16 +47,16 @@ class PortfolioPage extends GetView<PortfolioController> {
                   Text(
                     AppStrings.emptyPortfolioPageTitle,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   AppSizes.verticalSpaceSmall,
                   Text(
                     AppStrings.emptyPortfolioPageSubtitle,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey.shade500,
-                        ),
+                      color: Colors.grey.shade500,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   AppSizes.verticalSpaceLarge,
@@ -96,14 +96,8 @@ class PortfolioPage extends GetView<PortfolioController> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: isDark
-                      ? [
-                          const Color(0xFF1E293B),
-                          const Color(0xFF0F172A),
-                        ]
-                      : [
-                          const Color(0xFFF1F5F9),
-                          const Color(0xFFE2E8F0),
-                        ],
+                      ? [const Color(0xFF1E293B), const Color(0xFF0F172A)]
+                      : [const Color(0xFFF1F5F9), const Color(0xFFE2E8F0)],
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -173,7 +167,9 @@ class PortfolioPage extends GetView<PortfolioController> {
                             Row(
                               children: [
                                 Icon(
-                                  pnl >= 0 ? Icons.arrow_upward : Icons.arrow_downward,
+                                  pnl >= 0
+                                      ? Icons.arrow_upward
+                                      : Icons.arrow_downward,
                                   size: 14,
                                   color: FormatUtils.getPnLColor(pnl),
                                 ),
@@ -197,7 +193,9 @@ class PortfolioPage extends GetView<PortfolioController> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSizes.paddingMedium),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.paddingMedium,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -216,16 +214,23 @@ class PortfolioPage extends GetView<PortfolioController> {
             const SizedBox(height: 8),
             Expanded(
               child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: AppSizes.paddingMedium),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSizes.paddingMedium,
+                ),
                 itemCount: controller.holdings.length,
-                separatorBuilder: (context, index) => AppSizes.verticalSpaceSmall,
+                separatorBuilder: (context, index) =>
+                    AppSizes.verticalSpaceSmall,
                 itemBuilder: (context, index) {
                   final holding = controller.holdings[index];
                   final ltp = controller.getLtp(holding.symbol);
-                  final double currentLtp = ltp > 0 ? ltp : holding.averageBuyPrice;
-                  final double holdingInvested = controller.getHoldingInvestedValue(holding);
+                  final double currentLtp = ltp > 0
+                      ? ltp
+                      : holding.averageBuyPrice;
+                  final double holdingInvested = controller
+                      .getHoldingInvestedValue(holding);
                   final double holdingPnl = controller.getHoldingPnL(holding);
-                  final double holdingPnlPct = controller.getHoldingPnLPercentage(holding);
+                  final double holdingPnlPct = controller
+                      .getHoldingPnLPercentage(holding);
 
                   return Card(
                     clipBehavior: Clip.antiAlias,
@@ -259,17 +264,27 @@ class PortfolioPage extends GetView<PortfolioController> {
                                   ),
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
                                   decoration: BoxDecoration(
-                                    color: FormatUtils.getPnLColor(holdingPnl).withValues(alpha: 0.1),
+                                    color: FormatUtils.getPnLColor(
+                                      holdingPnl,
+                                    ).withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
-                                    FormatUtils.formatPercentage(holdingPnlPct, includeSign: true),
+                                    FormatUtils.formatPercentage(
+                                      holdingPnlPct,
+                                      includeSign: true,
+                                    ),
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
-                                      color: FormatUtils.getPnLColor(holdingPnl),
+                                      color: FormatUtils.getPnLColor(
+                                        holdingPnl,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -284,12 +299,17 @@ class PortfolioPage extends GetView<PortfolioController> {
                                   children: [
                                     Text(
                                       AppStrings.quantity,
-                                      style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey.shade500,
+                                      ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
                                       holding.quantity.toStringAsFixed(0),
-                                      style: const TextStyle(fontWeight: FontWeight.bold),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -298,12 +318,19 @@ class PortfolioPage extends GetView<PortfolioController> {
                                   children: [
                                     Text(
                                       AppStrings.avgPrice,
-                                      style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey.shade500,
+                                      ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      FormatUtils.formatCurrency(holding.averageBuyPrice),
-                                      style: const TextStyle(fontWeight: FontWeight.bold),
+                                      FormatUtils.formatCurrency(
+                                        holding.averageBuyPrice,
+                                      ),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -312,14 +339,19 @@ class PortfolioPage extends GetView<PortfolioController> {
                                   children: [
                                     Text(
                                       'Live LTP',
-                                      style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey.shade500,
+                                      ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
                                       FormatUtils.formatCurrency(currentLtp),
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: ltp > 0 ? Theme.of(context).primaryColor : null,
+                                        color: ltp > 0
+                                            ? Theme.of(context).primaryColor
+                                            : null,
                                       ),
                                     ),
                                   ],
@@ -335,12 +367,20 @@ class PortfolioPage extends GetView<PortfolioController> {
                                   children: [
                                     Text(
                                       AppStrings.investedValue,
-                                      style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.grey.shade500,
+                                      ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      FormatUtils.formatCurrency(holdingInvested),
-                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                      FormatUtils.formatCurrency(
+                                        holdingInvested,
+                                      ),
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -349,15 +389,23 @@ class PortfolioPage extends GetView<PortfolioController> {
                                   children: [
                                     Text(
                                       '${AppStrings.returns} (${AppStrings.pnl})',
-                                      style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.grey.shade500,
+                                      ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      FormatUtils.formatCurrency(holdingPnl, includeSign: true),
+                                      FormatUtils.formatCurrency(
+                                        holdingPnl,
+                                        includeSign: true,
+                                      ),
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
-                                        color: FormatUtils.getPnLColor(holdingPnl),
+                                        color: FormatUtils.getPnLColor(
+                                          holdingPnl,
+                                        ),
                                       ),
                                     ),
                                   ],

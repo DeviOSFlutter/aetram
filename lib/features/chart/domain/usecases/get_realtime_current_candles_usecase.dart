@@ -6,9 +6,7 @@ class GetRealtimeCurrentCandlesUseCase {
 
   GetRealtimeCurrentCandlesUseCase(this._repository);
 
-  Future<List<CandleEntity>> call({
-    required String symbol,
-  }) {
+  Future<List<CandleEntity>> call({required String symbol}) {
     return _repository.getRealtimeCurrentCandles(symbol: symbol);
   }
 }

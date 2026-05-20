@@ -37,8 +37,9 @@ class SocketService extends GetxService {
   void _startThrottler() {
     _throttleTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
       if (_pendingTicks.isNotEmpty) {
-        final Map<String, Map<String, dynamic>> ticksToEmit =
-            Map.from(_pendingTicks);
+        final Map<String, Map<String, dynamic>> ticksToEmit = Map.from(
+          _pendingTicks,
+        );
         _pendingTicks.clear();
         for (final tick in ticksToEmit.values) {
           _tickerStreamController.add(tick);

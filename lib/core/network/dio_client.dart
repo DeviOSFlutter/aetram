@@ -10,24 +10,14 @@ class DioClient {
     _dio = Dio(
       BaseOptions(
         baseUrl: ApiConstants.baseUrl,
-        connectTimeout: const Duration(
-          seconds: 30,
-        ),
-        receiveTimeout: const Duration(
-          seconds: 30,
-        ),
-        sendTimeout: const Duration(
-          seconds: 30,
-        ),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 30),
+        headers: {'Content-Type': 'application/json'},
       ),
     );
 
-    _dio.interceptors.add(
-      ApiInterceptor(),
-    );
+    _dio.interceptors.add(ApiInterceptor());
   }
 
   Future<Response<dynamic>> get(
@@ -35,14 +25,9 @@ class DioClient {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      return await _dio.get(
-        path,
-        queryParameters: queryParameters,
-      );
+      return await _dio.get(path, queryParameters: queryParameters);
     } on DioException catch (e) {
-      throw ApiException(
-        e.message ?? 'Something went wrong',
-      );
+      throw ApiException(e.message ?? 'Something went wrong');
     }
   }
 
@@ -58,9 +43,7 @@ class DioClient {
         queryParameters: queryParameters,
       );
     } on DioException catch (e) {
-      throw ApiException(
-        e.message ?? 'Something went wrong',
-      );
+      throw ApiException(e.message ?? 'Something went wrong');
     }
   }
 }

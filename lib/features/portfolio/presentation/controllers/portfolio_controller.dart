@@ -15,7 +15,8 @@ class PortfolioController extends GetxController {
     this._watchlistController,
   );
 
-  final RxList<PortfolioHoldingEntity> holdings = <PortfolioHoldingEntity>[].obs;
+  final RxList<PortfolioHoldingEntity> holdings =
+      <PortfolioHoldingEntity>[].obs;
   final RxBool isLoading = false.obs;
 
   @override
@@ -29,7 +30,7 @@ class PortfolioController extends GetxController {
     try {
       final list = await _getPortfolioHoldingsUseCase();
       holdings.assignAll(list);
-      
+
       final List<String> symbols = list.map((h) => h.symbol).toList();
       _watchlistController.setPortfolioSymbols(symbols);
     } catch (e) {

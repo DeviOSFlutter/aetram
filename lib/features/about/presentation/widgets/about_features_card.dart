@@ -67,8 +67,7 @@ class AboutFeaturesCard extends StatelessWidget {
                       color: color.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child:
-                        Icon(f['icon'] as IconData, size: 18, color: color),
+                    child: Icon(f['icon'] as IconData, size: 18, color: color),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -78,12 +77,16 @@ class AboutFeaturesCard extends StatelessWidget {
                         Text(
                           f['title'] as String,
                           style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Text(
                           f['sub'] as String,
                           style: TextStyle(
-                              fontSize: 12, color: Colors.grey.shade500),
+                            fontSize: 12,
+                            color: Colors.grey.shade500,
+                          ),
                         ),
                       ],
                     ),

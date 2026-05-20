@@ -129,7 +129,7 @@ class WatchlistController extends GetxController {
   void _processCandleTick(TickEntity tick) {
     final int bucket =
         (tick.timestamp ?? DateTime.now()).millisecondsSinceEpoch ~/
-            (_bucketSize * 1000);
+        (_bucketSize * 1000);
 
     final List<CandleEntity> existingCandles = List<CandleEntity>.from(
       symbolCandles[tick.symbol] ?? [],

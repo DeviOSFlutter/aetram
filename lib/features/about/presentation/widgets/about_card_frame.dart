@@ -55,7 +55,9 @@ class AboutCardFrame extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),

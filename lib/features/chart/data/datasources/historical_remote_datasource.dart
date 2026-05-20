@@ -33,10 +33,7 @@ class HistoricalRemoteDataSource {
   }) async {
     final response = await _dioClient.post(
       '/realtime-current',
-      data: {
-        'symbol': symbol,
-        'limit': limit,
-      },
+      data: {'symbol': symbol, 'limit': limit},
     );
 
     final rawData = response.data['data'];

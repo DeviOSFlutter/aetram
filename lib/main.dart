@@ -2,6 +2,8 @@ import 'package:aetram/core/constants/app_strings.dart';
 import 'package:aetram/core/di/initial_binding.dart';
 import 'package:aetram/core/routes/app_pages.dart';
 import 'package:aetram/core/theme/app_theme.dart';
+import 'package:aetram/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -10,6 +12,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await GetStorage.init();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const MyApp());
 }

@@ -59,10 +59,7 @@ class MainPage extends GetView<MainController> {
     return Obx(() {
       final int idx = controller.currentIndex.value;
       return Scaffold(
-        body: IndexedStack(
-          index: idx,
-          children: _pages,
-        ),
+        body: IndexedStack(index: idx, children: _pages),
         bottomNavigationBar: _buildBottomNav(idx),
       );
     });
@@ -102,10 +99,7 @@ class MainPage extends GetView<MainController> {
             ),
             const VerticalDivider(width: 1, thickness: 1),
             Expanded(
-              child: IndexedStack(
-                index: idx,
-                children: _pages,
-              ),
+              child: IndexedStack(index: idx, children: _pages),
             ),
           ],
         ),

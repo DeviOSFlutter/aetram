@@ -19,12 +19,7 @@ class AppTheme {
       centerTitle: true,
       backgroundColor: Color(0xFFF8FAFC),
       foregroundColor: Color(0xFF0F172A),
-      shape: Border(
-        bottom: BorderSide(
-          color: Color(0xFFE2E8F0),
-          width: 1,
-        ),
-      ),
+      shape: Border(bottom: BorderSide(color: Color(0xFFE2E8F0), width: 1)),
       titleTextStyle: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w800,
@@ -38,10 +33,7 @@ class AppTheme {
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(
-          color: Color(0xFFE2E8F0),
-          width: 1,
-        ),
+        side: const BorderSide(color: Color(0xFFE2E8F0), width: 1),
       ),
     ),
     navigationBarTheme: const NavigationBarThemeData(
@@ -68,12 +60,7 @@ class AppTheme {
       centerTitle: true,
       backgroundColor: Color(0xFF090D16),
       foregroundColor: Color(0xFFF8FAFC),
-      shape: Border(
-        bottom: BorderSide(
-          color: Color(0xFF1E293B),
-          width: 1,
-        ),
-      ),
+      shape: Border(bottom: BorderSide(color: Color(0xFF1E293B), width: 1)),
       titleTextStyle: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w800,
@@ -87,10 +74,7 @@ class AppTheme {
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(
-          color: Color(0xFF1E293B),
-          width: 1,
-        ),
+        side: const BorderSide(color: Color(0xFF1E293B), width: 1),
       ),
     ),
     navigationBarTheme: const NavigationBarThemeData(

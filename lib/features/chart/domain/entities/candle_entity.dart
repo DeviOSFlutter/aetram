@@ -20,8 +20,7 @@ class CandleEntity {
     this.timestamp,
   });
 
-  bool get isBullish =>
-      close >= open;
+  bool get isBullish => close >= open;
 
   CandleEntity copyWith({
     double? high,

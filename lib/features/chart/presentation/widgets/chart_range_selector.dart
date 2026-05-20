@@ -55,14 +55,18 @@ class _RangeButton extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? Theme.of(context).colorScheme.primary : Colors.transparent,
+          color: isSelected
+              ? Theme.of(context).colorScheme.primary
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: Theme.of(context).colorScheme.primary),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : Theme.of(context).colorScheme.primary,
+            color: isSelected
+                ? Colors.white
+                : Theme.of(context).colorScheme.primary,
             fontWeight: FontWeight.bold,
           ),
         ),

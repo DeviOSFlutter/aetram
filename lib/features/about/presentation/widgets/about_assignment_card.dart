@@ -35,8 +35,11 @@ class AboutAssignmentCard extends StatelessWidget {
                 color: Colors.teal.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child:
-                  const Icon(Icons.badge_outlined, color: Colors.teal, size: 22),
+              child: const Icon(
+                Icons.badge_outlined,
+                color: Colors.teal,
+                size: 22,
+              ),
             ),
             AppSizes.horizontalSpaceMedium,
             Expanded(
