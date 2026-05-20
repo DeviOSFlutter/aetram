@@ -13,6 +13,17 @@ class SymbolTile extends GetView<WatchlistController> {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          final bool exists = controller.watchlist.any(
+            (item) => item.symbol == symbol.symbol,
+          );
+          if (exists) {
+            controller.removeSymbol(symbol.symbol);
+          } else {
+            controller.addSymbol(symbol.symbol);
+          }
+        },
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSizes.paddingMedium,
           vertical: AppSizes.paddingSmall,
@@ -29,6 +40,7 @@ class SymbolTile extends GetView<WatchlistController> {
 
           return IconButton(
             onPressed: () {
+              FocusManager.instance.primaryFocus?.unfocus();
               if (exists) {
                 controller.removeSymbol(symbol.symbol);
               } else {

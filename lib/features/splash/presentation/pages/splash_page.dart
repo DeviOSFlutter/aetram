@@ -11,6 +11,7 @@ class SplashPage extends GetView<ThemeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSizes.paddingLarge),

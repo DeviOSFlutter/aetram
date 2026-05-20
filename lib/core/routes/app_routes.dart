@@ -6,4 +6,6 @@ class AppRoutes {
   static const String watchlist = '/watchlist';
 
   static const String chart = '/chart';
+
+  static const String fullscreenChart = '/fullscreen-chart';
 }

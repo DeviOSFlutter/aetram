@@ -77,8 +77,6 @@ class SocketService extends GetxService {
     });
 
     _socket.on(SocketEvents.ticker, (data) {
-      debugPrint('RAW TICK => $data');
-
       try {
         if (data == null) {
           return;

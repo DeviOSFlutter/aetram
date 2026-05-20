@@ -15,6 +15,7 @@ class WatchlistPage extends GetView<WatchlistController> {
     return PopScope(
       canPop: false,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(AppStrings.watchlistTitle),
           actions: [

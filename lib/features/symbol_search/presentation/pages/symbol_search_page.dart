@@ -12,6 +12,7 @@ class SymbolSearchPage extends GetView<SymbolSearchController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text(AppStrings.symbolSearchTitle)),
       body: Padding(
         padding: const EdgeInsets.all(AppSizes.paddingMedium),

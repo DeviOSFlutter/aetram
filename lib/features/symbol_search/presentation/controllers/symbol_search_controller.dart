@@ -63,6 +63,7 @@ class SymbolSearchController extends GetxController {
 
   @override
   void onClose() {
+    FocusManager.instance.primaryFocus?.unfocus();
     searchController.dispose();
 
     super.onClose();

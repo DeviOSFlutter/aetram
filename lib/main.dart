@@ -27,6 +27,32 @@ class MyApp extends StatelessWidget {
       initialRoute: AppPages.initial,
       getPages: AppPages.routes,
       initialBinding: InitialBinding(),
+      builder: (context, child) {
+        final mediaQueryData = MediaQuery.of(context);
+        return MediaQuery(
+          data: mediaQueryData.copyWith(
+            viewInsets: EdgeInsets.only(
+              left: mediaQueryData.viewInsets.left.clamp(0.0, double.infinity),
+              top: mediaQueryData.viewInsets.top.clamp(0.0, double.infinity),
+              right: mediaQueryData.viewInsets.right.clamp(0.0, double.infinity),
+              bottom: mediaQueryData.viewInsets.bottom.clamp(0.0, double.infinity),
+            ),
+            viewPadding: EdgeInsets.only(
+              left: mediaQueryData.viewPadding.left.clamp(0.0, double.infinity),
+              top: mediaQueryData.viewPadding.top.clamp(0.0, double.infinity),
+              right: mediaQueryData.viewPadding.right.clamp(0.0, double.infinity),
+              bottom: mediaQueryData.viewPadding.bottom.clamp(0.0, double.infinity),
+            ),
+            padding: EdgeInsets.only(
+              left: mediaQueryData.padding.left.clamp(0.0, double.infinity),
+              top: mediaQueryData.padding.top.clamp(0.0, double.infinity),
+              right: mediaQueryData.padding.right.clamp(0.0, double.infinity),
+              bottom: mediaQueryData.padding.bottom.clamp(0.0, double.infinity),
+            ),
+          ),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
     );
   }
 }

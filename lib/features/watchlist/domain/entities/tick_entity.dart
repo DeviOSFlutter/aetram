@@ -7,11 +7,14 @@ class TickEntity {
 
   final int sequenceNo;
 
+  final DateTime? timestamp;
+
   const TickEntity({
     required this.symbol,
     required this.ltp,
     required this.prevClose,
     required this.sequenceNo,
+    this.timestamp,
   });
 
   double get change => ltp - prevClose;

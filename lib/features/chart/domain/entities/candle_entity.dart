@@ -9,12 +9,15 @@ class CandleEntity {
 
   final double close;
 
+  final DateTime? timestamp;
+
   const CandleEntity({
     required this.bucket,
     required this.open,
     required this.high,
     required this.low,
     required this.close,
+    this.timestamp,
   });
 
   bool get isBullish =>
@@ -24,6 +27,7 @@ class CandleEntity {
     double? high,
     double? low,
     double? close,
+    DateTime? timestamp,
   }) {
     return CandleEntity(
       bucket: bucket,
@@ -31,6 +35,7 @@ class CandleEntity {
       high: high ?? this.high,
       low: low ?? this.low,
       close: close ?? this.close,
+      timestamp: timestamp ?? this.timestamp,
     );
   }
 }

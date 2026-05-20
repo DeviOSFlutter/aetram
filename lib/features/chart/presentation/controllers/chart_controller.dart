@@ -1,4 +1,11 @@
+import 'dart:async';
+
+import 'package:aetram/core/socket/socket_service.dart';
 import 'package:aetram/features/chart/domain/entities/candle_entity.dart';
+import 'package:aetram/features/chart/domain/enums/chart_range.dart';
+import 'package:aetram/features/chart/domain/usecases/get_historical_candles_usecase.dart';
+import 'package:aetram/features/chart/domain/usecases/get_realtime_current_candles_usecase.dart';
+import 'package:aetram/features/watchlist/data/models/tick_model.dart';
 import 'package:aetram/features/watchlist/domain/entities/tick_entity.dart';
 import 'package:aetram/features/watchlist/presentation/controllers/watchlist_controller.dart';
 import 'package:get/get.dart';
@@ -6,99 +13,190 @@ import 'package:get/get.dart';
 class ChartController extends GetxController {
   final WatchlistController _watchlistController;
 
-  ChartController(this._watchlistController);
+  final GetHistoricalCandlesUseCase _getHistoricalCandlesUseCase;
+
+  final GetRealtimeCurrentCandlesUseCase _getRealtimeCurrentCandlesUseCase;
+
+  ChartController(
+    this._watchlistController,
+    this._getHistoricalCandlesUseCase,
+    this._getRealtimeCurrentCandlesUseCase,
+  );
 
   final RxString selectedSymbol = ''.obs;
 
-  final RxList<CandleEntity> candles = <CandleEntity>[].obs;
+  final Rx<ChartRange> selectedRange = ChartRange.oneDay.obs;
 
-  Worker? _tickWorker;
+  final RxBool isLoading = false.obs;
 
-  static const int _bucketSize = 5;
+  final RxList<CandleEntity> historicalCandles = <CandleEntity>[].obs;
+
+  final RxList<CandleEntity> oneDayCandles = <CandleEntity>[].obs;
+
+  DateTime? latestLoadedTimestamp;
+
+  StreamSubscription? _tickSubscription;
 
   @override
   void onInit() {
     super.onInit();
 
     selectedSymbol.value = Get.arguments ?? '';
+    
+    // Register active chart symbol to merge it into socket subscriptions
+    _watchlistController.setActiveChartSymbol(selectedSymbol.value);
 
-    _listenToTicks();
-  }
-
-  void _listenToTicks() {
-    _tickWorker = ever<Map<String, TickEntity>>(
-      _watchlistController.liveTicks,
-      (_) {
-        final TickEntity? tick = _watchlistController.getTick(
-          selectedSymbol.value,
-        );
-
-        if (tick == null) {
-          return;
-        }
-
-        _processTick(tick);
-      },
-    );
-  }
-
-  void _processTick(TickEntity tick) {
-    final int currentBucket =
-        DateTime.now().millisecondsSinceEpoch ~/ (_bucketSize * 1000);
-
-    if (candles.isEmpty) {
-      candles.add(
-        CandleEntity(
-          bucket: currentBucket,
-          open: tick.ltp,
-          high: tick.ltp,
-          low: tick.ltp,
-          close: tick.ltp,
-        ),
-      );
-
-      return;
-    }
-
-    final CandleEntity latest = candles.last;
-
-    if (latest.bucket == currentBucket) {
-      final CandleEntity updated = latest.copyWith(
-        high: tick.ltp > latest.high ? tick.ltp : latest.high,
-        low: tick.ltp < latest.low ? tick.ltp : latest.low,
-        close: tick.ltp,
-      );
-
-      candles[candles.length - 1] = updated;
-
-      candles.refresh();
-
-      return;
-    }
-
-    candles.add(
-      CandleEntity(
-        bucket: currentBucket,
-        open: latest.close,
-        high: tick.ltp,
-        low: tick.ltp,
-        close: tick.ltp,
-      ),
-    );
-
-    if (candles.length > 50) {
-      candles.removeAt(0);
-    }
+    _loadInitialOneDayData();
+    _listenToLiveTicks();
   }
 
   TickEntity? get currentTick {
     return _watchlistController.getTick(selectedSymbol.value);
   }
 
+  List<CandleEntity> get candles {
+    if (selectedRange.value == ChartRange.oneDay) {
+      return oneDayCandles;
+    }
+
+    return historicalCandles;
+  }
+
+  Future<void> _loadInitialOneDayData() async {
+    isLoading.value = true;
+    try {
+      final result = await _getRealtimeCurrentCandlesUseCase(
+        symbol: selectedSymbol.value,
+      );
+      oneDayCandles.assignAll(result);
+
+      // Find the latest loaded timestamp for deduplication
+      if (oneDayCandles.isNotEmpty) {
+        DateTime? maxTime;
+        for (var candle in oneDayCandles) {
+          if (candle.timestamp != null) {
+            if (maxTime == null || candle.timestamp!.isAfter(maxTime)) {
+              maxTime = candle.timestamp;
+            }
+          }
+        }
+        latestLoadedTimestamp = maxTime;
+      }
+    } catch (e) {
+      oneDayCandles.clear();
+    } finally {
+      if (selectedRange.value == ChartRange.oneDay) {
+        isLoading.value = false;
+      }
+    }
+  }
+
+  void _listenToLiveTicks() {
+    final SocketService socketService = Get.find<SocketService>();
+    _tickSubscription = socketService.tickerStream.listen((event) {
+      final tick = TickModel.fromJson(event);
+      if (tick.symbol == selectedSymbol.value &&
+          selectedRange.value == ChartRange.oneDay) {
+        _appendLiveTick(tick);
+      }
+    });
+  }
+
+  void _appendLiveTick(TickEntity tick) {
+    // Deduplication filter: ignore ticks that are already loaded in REST seed
+    if (tick.timestamp != null && latestLoadedTimestamp != null) {
+      if (!tick.timestamp!.isAfter(latestLoadedTimestamp!)) {
+        return;
+      }
+    }
+
+    if (oneDayCandles.isEmpty) {
+      if (!isLoading.value) {
+        oneDayCandles.add(
+          CandleEntity(
+            bucket: 0,
+            open: tick.ltp,
+            high: tick.ltp,
+            low: tick.ltp,
+            close: tick.ltp,
+            timestamp: tick.timestamp,
+          ),
+        );
+        if (tick.timestamp != null) {
+          latestLoadedTimestamp = tick.timestamp;
+        }
+      }
+      return;
+    }
+
+    final latest = oneDayCandles.last;
+    if (latest.close == tick.ltp) {
+      if (tick.timestamp != null &&
+          (latestLoadedTimestamp == null ||
+              tick.timestamp!.isAfter(latestLoadedTimestamp!))) {
+        latestLoadedTimestamp = tick.timestamp;
+      }
+      return;
+    }
+
+    oneDayCandles.add(
+      CandleEntity(
+        bucket: oneDayCandles.length,
+        open: latest.close,
+        high: tick.ltp > latest.close ? tick.ltp : latest.close,
+        low: tick.ltp < latest.close ? tick.ltp : latest.close,
+        close: tick.ltp,
+        timestamp: tick.timestamp,
+      ),
+    );
+
+    if (tick.timestamp != null) {
+      latestLoadedTimestamp = tick.timestamp;
+    }
+
+    if (oneDayCandles.length > 500) {
+      oneDayCandles.removeAt(0);
+    }
+  }
+
+  Future<void> changeRange(ChartRange range) async {
+    selectedRange.value = range;
+
+    if (range == ChartRange.oneDay) {
+      if (oneDayCandles.isEmpty) {
+        await _loadInitialOneDayData();
+      }
+      return;
+    }
+
+    isLoading.value = true;
+
+    try {
+      final String interval = range == ChartRange.oneWeek ? '1W' : '1M';
+
+      final result = await _getHistoricalCandlesUseCase(
+        symbol: selectedSymbol.value,
+        interval: interval,
+      );
+
+      if (selectedRange.value == range) {
+        historicalCandles.assignAll(result);
+      }
+    } catch (e) {
+      if (selectedRange.value == range) {
+        historicalCandles.clear();
+      }
+    } finally {
+      if (selectedRange.value == range) {
+        isLoading.value = false;
+      }
+    }
+  }
+
   @override
   void onClose() {
-    _tickWorker?.dispose();
-
+    _tickSubscription?.cancel();
+    _watchlistController.clearActiveChartSymbol();
     super.onClose();
   }
 }
