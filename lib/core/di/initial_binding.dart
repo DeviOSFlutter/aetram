@@ -2,6 +2,7 @@ import 'package:aetram/core/network/dio_client.dart';
 import 'package:aetram/core/socket/socket_service.dart';
 import 'package:aetram/core/storage/storage_service.dart';
 import 'package:aetram/core/theme/theme_controller.dart';
+import 'package:aetram/features/watchlist/presentation/bindings/watchlist_binding.dart';
 import 'package:get/get.dart';
 
 class InitialBinding extends Bindings {
@@ -17,5 +18,7 @@ class InitialBinding extends Bindings {
     );
 
     Get.put<SocketService>(SocketService(), permanent: true);
+
+    WatchlistBinding().dependencies();
   }
 }
