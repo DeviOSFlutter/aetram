@@ -52,7 +52,7 @@ class SocketService extends GetxService {
   }
 
   void _registerCoreListeners() {
-    _socket.on(SocketEvents.connect, (_) {
+    _socket.onConnect((_) {
       debugPrint('SOCKET CONNECTED');
 
       connectionStatus.value = SocketStatus.connected;
@@ -60,23 +60,51 @@ class SocketService extends GetxService {
       _resubscribeToActiveSymbols();
     });
 
-    _socket.on(SocketEvents.disconnect, (_) {
+    _socket.onDisconnect((_) {
       debugPrint('SOCKET DISCONNECTED');
 
       connectionStatus.value = SocketStatus.disconnected;
     });
 
-    _socket.on(SocketEvents.connectError, (error) {
-      debugPrint('SOCKET ERROR => $error');
+    _socket.onConnectError((error) {
+      debugPrint('SOCKET CONNECT ERROR => $error');
 
       connectionStatus.value = SocketStatus.error;
     });
 
-    _socket.on(SocketEvents.ticker, (data) {
-      try {
-        final Map<String, dynamic> tick = Map<String, dynamic>.from(data);
+    _socket.onError((error) {
+      debugPrint('SOCKET ERROR => $error');
+    });
 
-        _tickerStreamController.add(tick);
+    _socket.on(SocketEvents.ticker, (data) {
+      debugPrint('RAW TICK => $data');
+
+      try {
+        if (data == null) {
+          return;
+        }
+
+        if (data is Map) {
+          final Map<String, dynamic> tick = Map<String, dynamic>.from(data);
+
+          _tickerStreamController.add(tick);
+
+          return;
+        }
+
+        if (data is Iterable) {
+          final dynamic first = data.first;
+
+          if (first is Map) {
+            final Map<String, dynamic> tick = Map<String, dynamic>.from(first);
+
+            _tickerStreamController.add(tick);
+
+            return;
+          }
+        }
+
+        debugPrint('UNKNOWN TICK FORMAT => ${data.runtimeType}');
       } catch (e) {
         debugPrint('TICK PARSE ERROR => $e');
       }
@@ -92,7 +120,13 @@ class SocketService extends GetxService {
       ..clear()
       ..addAll(symbols);
 
-    _socket.emit(SocketEvents.subscribe, symbols);
+    if (!isConnected) {
+      debugPrint('SOCKET NOT CONNECTED');
+
+      return;
+    }
+
+    _socket.emit(SocketEvents.subscribe, [symbols]);
 
     debugPrint('SUBSCRIBED => $symbols');
   }
@@ -104,7 +138,11 @@ class SocketService extends GetxService {
 
     _activeSubscriptions.removeAll(symbols);
 
-    _socket.emit(SocketEvents.unsubscribe, symbols);
+    if (!isConnected) {
+      return;
+    }
+
+    _socket.emit(SocketEvents.unsubscribe, [symbols]);
 
     debugPrint('UNSUBSCRIBED => $symbols');
   }

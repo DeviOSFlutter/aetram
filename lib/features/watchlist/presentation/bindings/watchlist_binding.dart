@@ -1,3 +1,4 @@
+import 'package:aetram/core/socket/socket_service.dart';
 import 'package:aetram/core/storage/storage_service.dart';
 import 'package:aetram/features/watchlist/data/datasources/watchlist_local_datasource.dart';
 import 'package:aetram/features/watchlist/data/repositories/watchlist_repository_impl.dart';
@@ -30,6 +31,7 @@ class WatchlistBinding extends Bindings {
       WatchlistController(
         Get.find<GetWatchlistUseCase>(),
         Get.find<SaveWatchlistUseCase>(),
+        Get.find<SocketService>(),
       ),
       permanent: true,
     );

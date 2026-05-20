@@ -9,6 +9,5 @@ class SocketEvents {
 
   static const String ticker = 'ticker';
 
-  static const String connectError =
-      'connect_error';
+  static const String connectError = 'connect_error';
 }

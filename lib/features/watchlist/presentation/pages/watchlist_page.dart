@@ -14,53 +14,113 @@ class WatchlistPage extends GetView<WatchlistController> {
       canPop: false,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           title: const Text(AppStrings.watchlistTitle),
           actions: [
-            IconButton(
-              onPressed: () {
-                Get.toNamed(AppRoutes.symbolSearch);
-              },
-              icon: const Icon(Icons.add),
-            ),
+            Obx(() {
+              if (controller.watchlist.isEmpty) {
+                return const SizedBox.shrink();
+              }
+
+              return IconButton(
+                onPressed: () {
+                  Get.toNamed(AppRoutes.symbolSearch);
+                },
+                icon: const Icon(Icons.add),
+              );
+            }),
           ],
         ),
         body: Obx(() {
           if (controller.watchlist.isEmpty) {
-            return const Center(child: Text(AppStrings.emptyWatchlist));
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(AppSizes.paddingLarge),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      AppStrings.emptyWatchlist,
+                      textAlign: TextAlign.center,
+                    ),
+                    AppSizes.verticalSpaceMedium,
+                    SizedBox(
+                      width: 220,
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Get.toNamed(AppRoutes.symbolSearch);
+                        },
+                        child: const Text(AppStrings.addSymbols),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           }
-      
+
           return ListView.separated(
             padding: const EdgeInsets.all(AppSizes.paddingMedium),
             itemCount: controller.watchlist.length,
             separatorBuilder: (_, _) => AppSizes.verticalSpaceSmall,
             itemBuilder: (context, index) {
               final item = controller.watchlist[index];
-      
-              return Card(
-                child: ListTile(
-                  title: Text(
-                    item.symbol,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+
+              return Obx(() {
+                final tick = controller.getTick(item.symbol);
+
+                final bool isPositive = (tick?.change ?? 0) >= 0;
+
+                return Card(
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: AppSizes.paddingMedium,
+                      vertical: AppSizes.paddingSmall,
+                    ),
+                    title: Text(
+                      item.symbol,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: tick == null
+                        ? const Padding(
+                            padding: EdgeInsets.only(top: 4),
+                            child: Text('Waiting for realtime data...'),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Row(
+                              children: [
+                                Text(
+                                  '₹${tick.ltp.toStringAsFixed(2)}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  '${tick.change.toStringAsFixed(2)} (${tick.changePercentage.toStringAsFixed(2)}%)',
+                                  style: TextStyle(
+                                    color: isPositive
+                                        ? Colors.green
+                                        : Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                    trailing: IconButton(
+                      onPressed: () {
+                        controller.removeSymbol(item.symbol);
+                      },
+                      icon: const Icon(Icons.delete_outline),
+                    ),
                   ),
-                  trailing: IconButton(
-                    onPressed: () {
-                      controller.removeSymbol(item.symbol);
-                    },
-                    icon: const Icon(Icons.delete_outline),
-                  ),
-                ),
-              );
+                );
+              });
             },
           );
         }),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            Get.toNamed(AppRoutes.symbolSearch);
-          },
-          icon: const Icon(Icons.add),
-          label: const Text(AppStrings.addSymbols),
-        ),
       ),
     );
   }
