@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:aetram/core/socket/socket_service.dart';
+import 'package:aetram/core/socket/socket_status.dart';
 import 'package:aetram/features/watchlist/data/models/tick_model.dart';
 import 'package:aetram/features/watchlist/domain/entities/tick_entity.dart';
 import 'package:aetram/features/watchlist/domain/entities/watchlist_item_entity.dart';
@@ -20,6 +21,8 @@ class WatchlistController extends GetxController {
     this._saveWatchlistUseCase,
     this._socketService,
   );
+
+  Rx<SocketStatus> get connectionStatus => _socketService.connectionStatus;
 
   final RxList<WatchlistItemEntity> watchlist = <WatchlistItemEntity>[].obs;
 

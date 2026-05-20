@@ -23,4 +23,8 @@ class AppStrings {
   static const String addSymbols = 'Add Symbols';
 
   static const String emptyWatchlist = 'No symbols added to watchlist';
+
+  static const String liveMarket = 'LIVE MARKET';
+
+  static const String reconnecting = 'Reconnecting...';
 }
