@@ -1,7 +1,7 @@
 import 'package:aetram/core/constants/app_strings.dart';
 import 'package:aetram/core/utils/app_sizes.dart';
 import 'package:aetram/features/chart/presentation/controllers/chart_controller.dart';
-import 'package:aetram/features/chart/presentation/widgets/realtime_chart.dart';
+import 'package:aetram/features/chart/presentation/widgets/candle_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -48,11 +48,11 @@ class ChartPage extends GetView<ChartController> {
               ),
               AppSizes.verticalSpaceLarge,
               const SizedBox(
-                height: 320,
+                height: 360,
                 child: Card(
                   child: Padding(
                     padding: EdgeInsets.all(AppSizes.paddingMedium),
-                    child: RealtimeChart(),
+                    child: CandleChart(),
                   ),
                 ),
               ),
