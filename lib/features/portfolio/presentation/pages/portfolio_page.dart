@@ -3,6 +3,7 @@ import 'package:aetram/core/utils/app_sizes.dart';
 import 'package:aetram/core/utils/format_utils.dart';
 import 'package:aetram/features/main/presentation/controllers/main_controller.dart';
 import 'package:aetram/features/portfolio/presentation/controllers/portfolio_controller.dart';
+import 'package:aetram/shared/widgets/app_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +20,7 @@ class PortfolioPage extends GetView<PortfolioController> {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const AppLoader();
         }
 
         if (controller.holdings.isEmpty) {

@@ -4,6 +4,7 @@ import 'package:aetram/core/utils/format_utils.dart';
 import 'package:aetram/features/chart/domain/entities/candle_entity.dart';
 import 'package:aetram/features/chart/domain/enums/chart_range.dart';
 import 'package:aetram/features/chart/presentation/controllers/chart_controller.dart';
+import 'package:aetram/shared/widgets/app_loader.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,7 +36,7 @@ class CandleChart extends StatelessWidget {
 
     return Obx(() {
       if (chartController.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
+        return const AppLoader();
       }
 
       final candles = chartController.candles;
