@@ -20,7 +20,7 @@ class AboutPage extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSizes.paddingMedium),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const AboutHeroCard(),
             AppSizes.verticalSpaceLarge,
